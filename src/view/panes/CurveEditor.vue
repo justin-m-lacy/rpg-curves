@@ -7,7 +7,7 @@ const props = defineProps<{
 
 </script>
 <template>
-	<div class="flex flex-col">
+	<div class="flex flex-col text-xs">
 		<div class="text-xs">Curve Properties</div>
 		<div v-for="param in curve.params">
 			<div class="text-xs">{{ param.name ?? param.prop }}</div>

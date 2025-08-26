@@ -9,13 +9,13 @@ export class ExpCurve extends Curve {
 	public B: number;
 	public C: number;
 
-	constructor(opts: { name: string, a: number, b: number, c: number }) {
+	constructor(opts?: { name: string, a: number, b: number, c: number }) {
 
 		super(opts);
 
-		this.A = opts.a;
-		this.B = opts.b;
-		this.C = opts.c;
+		this.A = opts?.a ?? 1;
+		this.B = opts?.b ?? 1;
+		this.C = opts?.c ?? 1;
 
 	}
 
@@ -52,12 +52,12 @@ export class NatExpCurve extends Curve {
 	public B: number;
 	public C: number;
 
-	constructor(opts: { name: string, a: number, b: number, c: number }) {
+	constructor(opts?: { name: string, a: number, b: number, c: number }) {
 
 		super(opts);
-		this.A = opts.a;
-		this.B = opts.b;
-		this.C = opts.c;
+		this.A = opts?.a ?? 1;
+		this.B = opts?.b ?? 1;
+		this.C = opts?.c ?? 1;
 
 	}
 

@@ -2,6 +2,7 @@
 /// <reference types="@types/google.visualization" />
 
 import { LinearCurve } from '@/model/linear-curve';
+import { useCurveCreator } from '@/store/curve-creator';
 
 type DataTable = google.visualization.DataTable;
 
@@ -11,6 +12,9 @@ const waitCharts = new Promise((res, rej) => {
 		google.charts.load('current', { packages: ['corechart', 'line'] });
 	} catch (err) { rej(err) }
 });
+
+const creators = useCurveCreator();
+creators.register();
 
 const chartEl = shallowRef<HTMLCanvasElement>();
 const chart = ref<DataTable | null>(null);

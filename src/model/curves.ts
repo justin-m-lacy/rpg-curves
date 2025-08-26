@@ -8,32 +8,42 @@ export type TPoints = {
 	points: Array<{ x: number, y: number }>
 }
 
+export type CurveCreator<D extends object> = {
+	type: string,
+	create: () => D,
+	map: (this: D, x: number) => number,
+	params: CurveParam<D>[]
+}
 
-export type CurveParam<T extends object,> = {
+export type TCurve<D extends object> = D & {
+
+	creator: CurveCreator<D>,
+	map(x: number): number,
+}
+
+export type ICurve = new (obj?: any) => Curve;
+export type CurveParam<T extends object = any> = {
 	prop: keyof T,
 	desc: string,
 	name?: string,
 	min?: number,
 	max?: number
+
 }
 
-export abstract class Curve {
+export class Curve<T extends TCurve> {
 
-	name: string;
+	name: string = '';
 
-	readonly params: CurveParam<typeof this>[] = [];
+	creator: CurveCreator<T>;
 
-	constructor(opts: { name: string }) {
+	map: (x: number) => number;
 
-		this.name = opts.name;
-
-		this.init();
+	constructor(creator: CurveCreator<T>) {
+		this.creator = creator;
+		this.map = creator.map;
 	}
 
-	init() {
-	}
-
-	abstract plot(x: number): number;
 
 	getYValues(range: [number, number], steps: number) {
 		const step = (range[1] - range[0]) / steps;

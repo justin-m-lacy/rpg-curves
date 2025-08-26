@@ -8,26 +8,12 @@ export class LinearCurve extends Curve {
 	public A: number;
 	public C: number;
 
-	constructor(opts: { name: string, a: number, c: number }) {
+	constructor(opts?: { name: string, a: number, c: number }) {
 
 		super(opts);
-		this.A = opts.a;
-		this.C = opts.c;
+		this.A = opts?.a ?? 1;
+		this.C = opts?.c ?? 1;
 
-	}
-
-	init() {
-
-		this.params.push(
-			{
-				prop: 'A',
-				desc: 'Ax + C',
-			},
-			{
-				prop: 'C',
-				desc: 'Ax + C',
-			}
-		)
 	}
 
 	plot(x: number) {
