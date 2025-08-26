@@ -1,0 +1,38 @@
+{
+  "name": "voronoi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@vueuse/core": "^10.11.1",
+    "alea": "^1.0.1",
+    "pinia": "^2.1.7",
+    "simplex-noise": "^4.0.3",
+    "tailwindcss": "^4.1.12",
+    "vue": "^3.4.30"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/vite": "^4.1.12",
+    "@types/delaunator": "^5.0.3",
+    "@types/google.visualization": "^0.0.74",
+    "@types/node": "^22.13.5",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/cli-plugin-typescript": "~5.0.8",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.5.2",
+    "unplugin-auto-import": "^0.16.7",
+    "vite": "^6.3.3",
+    "vite-auto-import-resolvers": "^3.2.1",
+    "vitest": "^3.2.4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
