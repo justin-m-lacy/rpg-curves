@@ -1,5 +1,5 @@
-import { CurveCreator } from "@/model/curves";
-import { ExpCurve, NatExpCurve } from "@/model/exp-curve";
+import { CurveCreator } from "@/model/curves/curves";
+import { ExpCurve, NatExpCurve } from "@/model/curves/exp-curve";
 
 export const expCreator: CurveCreator<ExpCurve> = {
 	type: 'exp',

@@ -1,7 +1,7 @@
-import { CurveCreator } from "@/model/curves";
-import { LinearCurve } from "@/model/linear-curve";
+import { CurveCreator } from "@/model/curves/curves";
+import { LinearCurve } from "@/model/curves/linear-curve";
 
-export const linear: CurveCreator<LinearCurve> = {
+export const linearCreator: CurveCreator<LinearCurve> = {
 	type: 'linear',
 	create() {
 		return new LinearCurve();

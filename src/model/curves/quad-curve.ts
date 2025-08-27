@@ -1,4 +1,4 @@
-import { CurveBase } from "@/model/curve-base";
+import { CurveBase } from "@/model/curves/curve-base";
 
 /**
  * implements Ax^2 + Bx + C

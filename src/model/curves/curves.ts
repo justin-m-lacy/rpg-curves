@@ -1,9 +1,5 @@
 export type TRange = [number, number];
 
-export type TPlotter = {
-	plot: (x: number) => number
-}
-
 export type TPoints = {
 	points: Array<{ x: number, y: number }>
 }

@@ -1,4 +1,4 @@
-import { CurveBase } from "@/model/curve-base";
+import { CurveBase } from "@/model/curves/curve-base";
 
 /**
  * Implements A*10^(Bx) + C

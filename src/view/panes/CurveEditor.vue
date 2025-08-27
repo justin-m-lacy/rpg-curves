@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CurveModel } from '@/model/curve-model';
+import { CurveModel } from '@/model/curves/curve-model';
 
 const props = defineProps<{
 	model: CurveModel

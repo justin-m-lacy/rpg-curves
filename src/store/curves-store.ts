@@ -1,11 +1,10 @@
-import { CurveModel } from '@/model/curve-model';
+import { CurveModel } from '@/model/curves/curve-model';
 import { defineStore } from 'pinia';
 export const useCurves = defineStore('curves', () => {
 
 	// map curves by curve label.
 	const curves = ref(new Map<string, CurveModel>());
-
-	const selected = ref(new Set<CurveModel>());
+	const selected = ref<CurveModel[]>([]);
 
 	/**
 	 * @param model 
@@ -13,41 +12,52 @@ export const useCurves = defineStore('curves', () => {
 	 */
 	function select(model: CurveModel, multi: boolean = false) {
 		if (!multi) {
-			selected.value.clear();
+			selected.value = [model];
+		} else {
+			selected.value.push(model);
 		}
-		selected.value.add(model);
 	}
 
 	function deselect(model: CurveModel) {
-		selected.value.delete(model);
+		const ind = selected.value.findIndex(v => v == model);
+		if (ind >= 0) {
+			selected.value.splice(ind, 1);
+		}
 	}
 
 	function clearSelected() {
-		selected.value.clear();
+		selected.value = [];
 	}
 
 	function isSelected(c: CurveModel) {
-		return selected.value.has(c);
+		return selected.value.some(v => v == c);
 	}
+
 	/**
 	 * remove all curves.
 	 */
 	function deleteAll() {
 		curves.value.clear();
-		selected.value.clear();
+		selected.value = [];
 	}
+
+	let nextId: number = 1;
 
 	return {
 
 		select,
 		deselect,
 		clearSelected,
-		get selected(): CurveModel[] {
-			return Array.from(selected.value.values()) as CurveModel[];
+		selected,
+		add(m: CurveModel) {
+			curves.value.set(m.label, m);
 		},
 		curves,
 		deleteAll,
-		isSelected
+		isSelected,
+		uniqueName() {
+			return `New Curve ${nextId++}`;
+		}
 
 	}
 

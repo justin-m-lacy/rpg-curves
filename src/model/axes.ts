@@ -34,6 +34,17 @@ export class FixedStepAxis {
 
 	getTicks(range: [number, number]) {
 
+		let x = range[0];
+		const res: number[] = [x];
+
+		while (x < range[1]) {
+			x += this._step;
+			res.push(x);
+		}
+		res.push(range[1]);
+
+		return res;
+
 	}
 
 }
@@ -57,10 +68,26 @@ export class FixedDivisionAxis {
 	 */
 	constructor(divisions: number) {
 		if (divisions <= 0) throw new Error('Invalid step amount');
+		this._divides = 1;//divisions;
 	}
 
-	getTicks(range: [number, number]) {
+	getTicks([min, max]: [number, number]) {
 
+		const steps = this._divides;
+		const step = (max - min) / steps;
+
+		console.log(`steps: ${steps}`)
+		let x = min;
+		const res = <number[]>[x];
+		while (x < max) {
+
+			x += step;
+			res.push(x);
+
+		}
+		if (x < max) res.push(max);
+
+		return res;
 	}
 
 

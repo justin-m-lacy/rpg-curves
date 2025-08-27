@@ -1,5 +1,5 @@
-import { CurveCreator } from "@/model/curves";
-import { QuadCurve } from "@/model/quad-curve";
+import { CurveCreator } from "@/model/curves/curves";
+import { QuadCurve } from "@/model/curves/quad-curve";
 
 export const quadCreator: CurveCreator<QuadCurve> = {
 	type: 'quad',

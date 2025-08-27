@@ -1,4 +1,4 @@
-import { CurveParam, TCurve } from "@/model/curves";
+import { CurveParam, TCurve } from "@/model/curves/curves";
 
 export class CurveModel {
 

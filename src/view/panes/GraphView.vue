@@ -1,37 +1,27 @@
 <script setup lang="ts">
 /// <reference types="@types/google.visualization" />
-import { CurveModel } from '@/model/curve-model';
+import { FixedDivisionAxis } from '@/model/axes';
+import { CurveModel } from '@/model/curves/curve-model';
 import { useRange } from '@/view/composable/range-store';
 
 const props = defineProps<{
 	curves: CurveModel[]
 }>();
 
-// number of divisions on x-axis.
-const numSteps = shallowRef(20);
+// range of x-axis
 const range = useRange();
+
+const axis = shallowRef(new FixedDivisionAxis(20));
 
 const graphEl = shallowRef<HTMLElement>();
 type DataTable = google.visualization.DataTable;
-const chart = ref<DataTable | null>(null);
+const dataTable = ref<DataTable | null>(null);
 
 /**
  * steps on the x-axis.
  */
 const xstops = computed(() => {
-
-	const min = range.value[0];
-	const max = range.value[1];
-	const steps = numSteps.value;
-	const step = (max - min) / steps;
-
-	let x = min, prev: number;
-	return new Array(steps + 1).map((_) => {
-		prev = x;
-		x += step;
-		return prev;
-	});
-
+	return axis.value.getTicks(range.value);
 });
 
 function buildChart() {
@@ -43,6 +33,7 @@ function buildChart() {
 		return;
 	}
 
+	data.addColumn('number', 'level');
 	const curves = props.curves;
 	for (const curve of curves) {
 		data.addColumn('number', curve.label);
@@ -51,19 +42,24 @@ function buildChart() {
 	const xvals = xstops.value;
 	for (let i = 0; i < xvals.length; i++) {
 
+		console.log(`xval: ${xvals[i]}`);
 		data.addRow([
 			xvals[i], ...curves.map(v => v.map(xvals[i]))
 		]);
 
-
 	}
 
-	const chart = new google.visualization.LineChart(graphEl.value!);
-	chart.draw(data, {
+	const newChart = new google.visualization.LineChart(graphEl.value!);
+	newChart.draw(data, {
 		curveType: 'function',
 	});
+	dataTable.value = data;
 
 }
+
+watch(() => props.curves, (list) => {
+	buildChart();
+});
 
 </script>
 <template>
