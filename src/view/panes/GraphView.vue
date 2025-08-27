@@ -60,9 +60,7 @@ function buildChart() {
 
 	const chart = new google.visualization.LineChart(graphEl.value!);
 	chart.draw(data, {
-		title: 'lame',
 		curveType: 'function',
-
 	});
 
 }
