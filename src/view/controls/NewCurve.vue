@@ -25,7 +25,7 @@ const onCreate = () => {
 
 </script>
 <template>
-	<div>
+	<div class="">
 		<CurveSelector v-model="creator" />
 		<button type="button" @click="onCreate">Create</button>
 	</div>

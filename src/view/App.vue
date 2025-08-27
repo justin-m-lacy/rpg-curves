@@ -1,22 +1,30 @@
 <script setup lang="ts">
 /// <reference types="@types/google.visualization" />
 
+import { CurveModel } from '@/model/curve-model';
 import { useCreators } from '@/store/creators';
-
-type DataTable = google.visualization.DataTable;
-
-const waitCharts = new Promise((res, rej) => {
-	try {
-		google.charts.setOnLoadCallback(res);
-		google.charts.load('current', { packages: ['corechart', 'line'] });
-	} catch (err) { rej(err) }
-});
+import { useCurves } from '@/store/curves-store';
+import NewCurve from '@/view/controls/NewCurve.vue';
+import CurvesList from '@/view/panes/CurvesList.vue';
+import GraphView from '@/view/panes/GraphView.vue';
 
 const creators = useCreators();
 creators.register();
 
+const chartsLoaded = shallowRef(false);
+
+const waitCharts = new Promise((res, rej) => {
+	try {
+		google.charts.setOnLoadCallback(() => {
+			chartsLoaded.value = true;
+		});
+		google.charts.load('current', { packages: ['corechart', 'line'] });
+	} catch (err) { rej(err) }
+});
+
+
 const chartEl = shallowRef<HTMLCanvasElement>();
-const chart = ref<DataTable | null>(null);
+const curves = useCurves();
 
 function buildChart() {
 
@@ -52,6 +60,10 @@ function buildChart() {
 
 }
 
+function onNewCurve(model: CurveModel) {
+	curves.select(model);
+}
+
 watch(chartEl, (el) => {
 	if (!el) return;
 });
@@ -63,9 +75,17 @@ onMounted(() => {
 </script>
 <template>
 
-	<div class="w-full h-full flex justify-end overflow-hidden">
-		<div ref="chartEl" class="w-full h-full"></div>
-		<div class="flex flex-col justify-stretch min-h-full h-screen z-10 min-w-20 p-2 bg-white/75">
+	<div class="w-full h-full flex justify-end items-strech overflow-hidden">
+		<div class="flex flex-col p-2 bg-white/75 min-h-full">
+			<NewCurve @newCurve="onNewCurve" />
+			<CurvesList />
+		</div>
+
+		<GraphView v-if="chartsLoaded" class="w-full h-full"
+				   :curves="curves.selected as CurveModel[]" />
+
+		<div class="flex flex-col justify-stretch min-h-full
+				h-screen z-10 min-w-20 p-2 bg-white/75">
 		</div>
 	</div>
 
