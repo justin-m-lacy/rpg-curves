@@ -1,15 +1,10 @@
 import { CurveCreator } from "@/model/curves";
+import { LinearCurve } from "@/model/linear-curve";
 
-export const linear: CurveCreator<{ A: number, C: number }> = {
+export const linear: CurveCreator<LinearCurve> = {
 	type: 'linear',
-	map(x: number) {
-		return this.A * x + this.C;
-	},
 	create() {
-		return {
-			A: 0,
-			C: 0,
-		}
+		return new LinearCurve();
 	},
 	params: [{
 		prop: 'A',

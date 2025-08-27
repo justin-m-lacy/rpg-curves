@@ -1,8 +1,7 @@
 <script setup lang="ts">
 /// <reference types="@types/google.visualization" />
 
-import { LinearCurve } from '@/model/linear-curve';
-import { useCurveCreator } from '@/store/curve-creator';
+import { useCreators } from '@/store/creators';
 
 type DataTable = google.visualization.DataTable;
 
@@ -13,14 +12,11 @@ const waitCharts = new Promise((res, rej) => {
 	} catch (err) { rej(err) }
 });
 
-const creators = useCurveCreator();
+const creators = useCreators();
 creators.register();
 
 const chartEl = shallowRef<HTMLCanvasElement>();
 const chart = ref<DataTable | null>(null);
-
-const line = new LinearCurve({ name: 'line', a: 10, c: 5 });
-const p = line.params[0];
 
 function buildChart() {
 

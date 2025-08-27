@@ -1,43 +1,19 @@
-import { Curve } from "@/model/curves";
+import { CurveBase } from "@/model/curve-base";
 
 /**
  * Implements A*10^(Bx) + C
  */
-export class ExpCurve extends Curve {
+export class ExpCurve extends CurveBase {
 
-	public A: number;
-	public B: number;
-	public C: number;
+	public A: number = 1;
+	public B: number = 1;
+	public C: number = 1;
 
-	constructor(opts?: { name: string, a: number, b: number, c: number }) {
-
-		super(opts);
-
-		this.A = opts?.a ?? 1;
-		this.B = opts?.b ?? 1;
-		this.C = opts?.c ?? 1;
-
+	constructor() {
+		super('exp');
 	}
 
-	init() {
-
-		this.params.push(
-			{
-				prop: 'A',
-				desc: 'A*10^(Bx) + C',
-			},
-			{
-				prop: 'B',
-				desc: 'A*10^(Bx) + C',
-			},
-			{
-				prop: 'C',
-				desc: 'A*10^(Bx) + C',
-			}
-		)
-	}
-
-	plot(x: number) {
+	map(x: number) {
 		return this.A * Math.exp(Math.LN10 * this.B * x) + this.C;
 	}
 
@@ -46,40 +22,19 @@ export class ExpCurve extends Curve {
 /**
  * implements Ae^(Bx) + C
  */
-export class NatExpCurve extends Curve {
+export class NatExpCurve extends CurveBase {
 
-	public A: number;
-	public B: number;
-	public C: number;
+	public A: number = 1;
+	public B: number = 1;
+	public C: number = 1;
 
-	constructor(opts?: { name: string, a: number, b: number, c: number }) {
+	constructor() {
 
-		super(opts);
-		this.A = opts?.a ?? 1;
-		this.B = opts?.b ?? 1;
-		this.C = opts?.c ?? 1;
+		super('natexp');
 
 	}
 
-	init() {
-
-		this.params.push(
-			{
-				prop: 'A',
-				desc: 'A*e^B*x + C',
-			},
-			{
-				prop: 'B',
-				desc: 'A*e^B*x + C',
-			},
-			{
-				prop: 'C',
-				desc: 'A*e^B*x + C',
-			}
-		)
-	}
-
-	plot(x: number) {
+	map(x: number) {
 		return this.A * Math.exp(this.B * x) + this.C;
 	}
 

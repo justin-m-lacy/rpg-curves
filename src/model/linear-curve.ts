@@ -1,22 +1,18 @@
-import { Curve } from "@/model/curves";
+import { CurveBase } from "@/model/curve-base";
 
 /**
  * implements Ax + C
  */
-export class LinearCurve extends Curve {
+export class LinearCurve extends CurveBase {
 
-	public A: number;
-	public C: number;
+	public A: number = 1;
+	public C: number = 1;
 
-	constructor(opts?: { name: string, a: number, c: number }) {
-
-		super(opts);
-		this.A = opts?.a ?? 1;
-		this.C = opts?.c ?? 1;
-
+	constructor() {
+		super();
 	}
 
-	plot(x: number) {
+	map(x: number) {
 		return this.A * x + this.C;
 	}
 

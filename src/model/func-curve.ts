@@ -1,16 +1,16 @@
-import { Curve } from "@/model/curves";
+import { CurveBase } from "@/model/curve-base";
 
 /**
  * implements arbitrary function.
  */
-export class FuncCurve extends Curve {
+export class FuncCurve extends CurveBase {
 
-	plot: (v: number) => number;
+	map: (v: number) => number;
 
 	constructor(opts: { name: string, func: (v: number) => number }) {
 
-		super(opts);
-		this.plot = opts.func;
+		super();
+		this.map = opts.func;
 
 	}
 

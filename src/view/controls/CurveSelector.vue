@@ -1,39 +1,13 @@
 <script setup lang="ts">
-import { Curve } from '@/model/curves';
-import { ExpCurve, NatExpCurve } from '@/model/exp-curve';
-import { LinearCurve } from '@/model/linear-curve';
-import { QuadCurve } from '@/model/quad-curve';
+import { CurveCreator } from '@/model/curves';
+import { useCreators } from '@/store/creators';
 
-const props = defineProps<{
-	cls: typeof Curve
-}>();
-
-const emit = defineEmits<{
-	(e: 'newCurve', c: Curve): void;
-}>();
-
-const curve = ref<Curve>();
-
-const classes = [
-	LinearCurve,
-	QuadCurve,
-	ExpCurve,
-	NatExpCurve,
-]
-
-const onCreate = () => {
-
-	emit('newCurve', _);
-
-}
+const model = defineModel<CurveCreator>();
+const creatorStore = useCreators();
 
 </script>
 <template>
-	<div>
-		<select v-model="curve">
-			<option v-for="cls in classes">{{ cls.name }}</option>
-		</select>
-		<button type="button" @click="onCreate">Create</button>
-	</div>
-
+	<select v-model="model">
+		<option v-for="create in creatorStore.creators">{{ create.type }}</option>
+	</select>
 </template>
