@@ -68,7 +68,7 @@ export class FixedDivisionAxis {
 	 */
 	constructor(divisions: number) {
 		if (divisions <= 0) throw new Error('Invalid step amount');
-		this._divides = 1;//divisions;
+		this._divides = divisions;
 	}
 
 	getTicks([min, max]: [number, number]) {
@@ -76,7 +76,6 @@ export class FixedDivisionAxis {
 		const steps = this._divides;
 		const step = (max - min) / steps;
 
-		console.log(`steps: ${steps}`)
 		let x = min;
 		const res = <number[]>[x];
 		while (x < max) {

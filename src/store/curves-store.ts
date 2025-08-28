@@ -19,7 +19,7 @@ export const useCurves = defineStore('curves', () => {
 	}
 
 	function deselect(model: CurveModel) {
-		const ind = selected.value.findIndex(v => v == model);
+		const ind = selected.value.findIndex(v => v.id == model.id);
 		if (ind >= 0) {
 			selected.value.splice(ind, 1);
 		}
@@ -30,7 +30,7 @@ export const useCurves = defineStore('curves', () => {
 	}
 
 	function isSelected(c: CurveModel) {
-		return selected.value.some(v => v == c);
+		return selected.value.some(v => v.id == c.id);
 	}
 
 	/**
@@ -41,6 +41,19 @@ export const useCurves = defineStore('curves', () => {
 		selected.value = [];
 	}
 
+	function add(m: CurveModel) {
+		curves.value.set(m.id, m);
+	}
+
+	function remove(c: CurveModel) {
+
+		const ind = selected.value.findIndex(v => v.id == c.id);
+		if (ind) {
+			selected.value.splice(ind, 1);
+		}
+		curves.value.delete(c.id)
+	}
+
 	let nextId: number = 1;
 
 	return {
@@ -49,14 +62,13 @@ export const useCurves = defineStore('curves', () => {
 		deselect,
 		clearSelected,
 		selected,
-		add(m: CurveModel) {
-			curves.value.set(m.label, m);
-		},
+		add,
+		remove,
 		curves,
 		deleteAll,
 		isSelected,
 		uniqueName() {
-			return `New Curve ${nextId++}`;
+			return `Curve ${nextId++}`;
 		}
 
 	}

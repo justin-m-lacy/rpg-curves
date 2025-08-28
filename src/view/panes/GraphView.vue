@@ -42,7 +42,6 @@ function buildChart() {
 	const xvals = xstops.value;
 	for (let i = 0; i < xvals.length; i++) {
 
-		console.log(`xval: ${xvals[i]}`);
 		data.addRow([
 			xvals[i], ...curves.map(v => v.map(xvals[i]))
 		]);
@@ -51,11 +50,15 @@ function buildChart() {
 
 	const newChart = new google.visualization.LineChart(graphEl.value!);
 	newChart.draw(data, {
-		curveType: 'function',
+		curveType: 'none',
 	});
 	dataTable.value = data;
 
 }
+
+onMounted(() => {
+	if (props.curves.length) buildChart();
+})
 
 watch(() => props.curves, (list) => {
 	buildChart();
@@ -63,7 +66,7 @@ watch(() => props.curves, (list) => {
 
 </script>
 <template>
-	<div>
-		<div ref="graphEl"></div>
-	</div>
+
+	<div ref="graphEl"></div>
+
 </template>

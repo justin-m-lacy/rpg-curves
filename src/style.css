@@ -5,6 +5,10 @@
 
 @theme {
 	--z-index-100:100;
+	--grow-2:2;
+	--grow-3:3;
+	--grow-4:4;
+	--grow-5:5;
 }
 
 @layer components {
@@ -22,4 +26,8 @@
 		text-amber-950;
 	  }
 	
+}
+
+body {
+	box-sizing: border-box;
 }

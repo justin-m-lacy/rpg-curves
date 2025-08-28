@@ -9,16 +9,21 @@ const curves = useCurves();
 function onSelect(event: MouseEvent, curve: CurveModel) {
 	curves.select(curve, event.shiftKey);
 }
+function onDelete(c: CurveModel) {
+	curves.remove(c);
+}
 
 </script>
 <template>
-	<div class="flex flex-col">
+	<div class="flex flex-col gap-y-1.5">
 		<div v-for="c in curves.curves.values()"
-			 class="flex" :class="{
+			 class="flex gap-x-2" :class="{
 				'font-bold': curves.isSelected(c as CurveModel)
 			}"
 			 @click="onSelect($event, c as CurveModel)">
-			{{ c.label }}
+
+			<button @click="onDelete(c)" class="text-xs">❌</button>
+			<span>{{ c.label }}</span>
 		</div>
 	</div>
 

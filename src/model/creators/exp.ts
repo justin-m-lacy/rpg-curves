@@ -23,14 +23,14 @@ export const natExpCreator: CurveCreator<NatExpCurve> = {
 	create() { return new NatExpCurve(); },
 	params: [{
 		prop: 'A',
-		desc: 'A*e^B*x + C',
+		desc: 'A*e^Bx + C',
 	},
 	{
 		prop: 'B',
-		desc: 'A*e^B*x + C',
+		desc: 'A*e^Bx + C',
 	},
 	{
 		prop: 'C',
-		desc: 'A*e^B*x + C',
+		desc: 'A*e^Bx + C',
 	}]
 };
