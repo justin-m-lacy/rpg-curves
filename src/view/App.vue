@@ -4,6 +4,7 @@
 import { CurveModel } from '@/model/curves/curve-model';
 import { useCreators } from '@/store/creators';
 import { useCurves } from '@/store/curves-store';
+import { useSelect } from '@/store/select-store';
 import NewCurve from '@/view/controls/NewCurve.vue';
 import Header from '@/view/Header.vue';
 import CurveEditor from '@/view/panes/CurveEditor.vue';
@@ -14,6 +15,7 @@ import GraphView from '@/view/panes/GraphView.vue';
 const chartsLoaded = shallowRef(false);
 
 const creators = useCreators();
+const select = useSelect();
 
 google.charts.load('current', { packages: ['corechart', 'line'] });
 google.charts.setOnLoadCallback(() => {
@@ -27,7 +29,7 @@ const curves = useCurves();
 function onNewCurve(model: CurveModel) {
 	model.label = curves.uniqueName();
 	curves.add(model);
-	curves.select(model);
+	select.select(model);
 }
 
 watch(chartEl, (el) => {
@@ -51,10 +53,10 @@ onMounted(() => {
 
 			<div class="h-full flex flex-col gap-y-1 grow-4">
 				<GraphView v-if="chartsLoaded" class="basis-1/2"
-						   :curves="curves.selected" />
+						   :curves="select.selected" />
 
 				<div class="flex flex-wrap gap-y-3">
-					<CurveEditor v-for="curve in curves.selected" class="flex justify-stretch"
+					<CurveEditor v-for="curve in select.selected" class="flex justify-stretch"
 								 :model="curve" :key="curve.id" />
 				</div>
 			</div>

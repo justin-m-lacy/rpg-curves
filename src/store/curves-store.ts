@@ -1,44 +1,20 @@
 import { CurveModel } from '@/model/curves/curve-model';
+import { useSelect } from '@/store/select-store';
 import { defineStore } from 'pinia';
+
 export const useCurves = defineStore('curves', () => {
 
 	// map curves by curve label.
 	const curves = ref(new Map<string, CurveModel>());
-	const selected = ref<CurveModel[]>([]);
 
-	/**
-	 * @param model 
-	 * @param multi - whether to add to multiple selection.
-	 */
-	function select(model: CurveModel, multi: boolean = false) {
-		if (!multi) {
-			selected.value = [model];
-		} else {
-			selected.value.push(model);
-		}
-	}
-
-	function deselect(model: CurveModel) {
-		const ind = selected.value.findIndex(v => v.id == model.id);
-		if (ind >= 0) {
-			selected.value.splice(ind, 1);
-		}
-	}
-
-	function clearSelected() {
-		selected.value = [];
-	}
-
-	function isSelected(c: CurveModel) {
-		return selected.value.some(v => v.id == c.id);
-	}
+	const selects = useSelect();
 
 	/**
 	 * remove all curves.
 	 */
 	function deleteAll() {
 		curves.value.clear();
-		selected.value = [];
+		selects.clear;
 	}
 
 	function add(m: CurveModel) {
@@ -47,26 +23,20 @@ export const useCurves = defineStore('curves', () => {
 
 	function remove(c: CurveModel) {
 
-		const ind = selected.value.findIndex(v => v.id == c.id);
-		if (ind) {
-			selected.value.splice(ind, 1);
-		}
+		selects.deselect(c);
 		curves.value.delete(c.id)
 	}
 
 	let nextId: number = 1;
 
+
+
 	return {
 
-		select,
-		deselect,
-		clearSelected,
-		selected,
 		add,
 		remove,
 		curves,
 		deleteAll,
-		isSelected,
 		uniqueName() {
 			return `Curve ${nextId++}`;
 		}

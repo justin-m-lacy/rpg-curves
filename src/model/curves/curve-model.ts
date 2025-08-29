@@ -61,6 +61,30 @@ export class CurveModel {
 	map(x: number): number { return this._curve.map(x) }
 
 	/**
+	 * Set matching params from list. invalid parameters are ignored.
+	 * @param arr 
+	 */
+	setParams(arr: { prop: string, value: number }[]) {
+
+		arr.forEach(v => {
+			this.setParam(v.prop, v.value)
+		});
+
+	}
+
+	/**
+	 * set parameter value.
+	 * @param prop 
+	 * @param value 
+	 * @returns 
+	 */
+	setParam(prop: string, value: number) {
+		const param = this.params.find(v => v.prop == prop);
+		if (!param) return;
+		(this._curve as any)[prop] = param.value = value;
+	}
+
+	/**
 	 * Adds a clone of the curve param to this params.
 	 * @param p - original param.
 	 * @returns existing matching param, or cloned param

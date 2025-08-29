@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { loadJsonStr } from '@/export/files';
+import { decodeCurves } from '@/export/decode';
+import { encodeCurves } from '@/export/encode';
+import { loadJsonStr, useFileLink } from '@/export/files';
 import { CurveModel } from '@/model/curves/curve-model';
 import { useCurves } from '@/store/curves-store';
 import { useFileSelect } from '@/view/composable/file-select';
@@ -10,30 +12,25 @@ const curveStore = useCurves();
 
 function exportData() {
 
-	const res: any = {
-	}
+	const json = encodeCurves(curveStore.curves as Map<string, CurveModel>);
+	useFileLink(json, 'curves');
 
-	const curves: ReturnType<CurveModel['toJSON']>[] = [];
-
-	for (const curve of curveStore.curves.values()) {
-		curves.push(curve.toJSON());
-	}
-
-	return {
-		curves
-	};
-
-}
-
-function openMerge() {
-	showMerge.value = true;
 }
 
 const fileSelect = useFileSelect(loadFile);
 
 async function loadFile(files: FileList) {
 	try {
-		const fileData = await loadJsonStr(files);
+
+		const fileData = await loadJsonStr(files)!;
+		const curves = decodeCurves(fileData);
+
+		if (!curves?.length) return;
+
+		curveStore.deleteAll();
+		for (const model of curves) {
+			curveStore.add(model);
+		}
 
 	} catch (err) {
 		console.error(err);
