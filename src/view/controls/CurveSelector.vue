@@ -5,7 +5,9 @@ import { useCreators } from '@/store/creators';
 const model = defineModel<CurveCreator>();
 const creatorStore = useCreators();
 
-if (!model.value) model.value = creatorStore.get('linear');
+if (model.value == null) {
+	model.value = creatorStore.get('linear');
+}
 
 </script>
 <template>

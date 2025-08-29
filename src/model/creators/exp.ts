@@ -7,14 +7,17 @@ export const expCreator: CurveCreator<ExpCurve> = {
 	params: [{
 		prop: 'A',
 		desc: 'A*10^(Bx) + C',
+		value: 1
 	},
 	{
 		prop: 'B',
 		desc: 'A*10^(Bx) + C',
+		value: 0.1
 	},
 	{
 		prop: 'C',
 		desc: 'A*10^(Bx) + C',
+		value: 1
 	}]
 }
 
@@ -24,13 +27,16 @@ export const natExpCreator: CurveCreator<NatExpCurve> = {
 	params: [{
 		prop: 'A',
 		desc: 'A*e^Bx + C',
+		value: 1
 	},
 	{
 		prop: 'B',
 		desc: 'A*e^Bx + C',
+		value: 0.1
 	},
 	{
 		prop: 'C',
 		desc: 'A*e^Bx + C',
+		value: 1
 	}]
 };

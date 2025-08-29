@@ -3,6 +3,7 @@
 import { FixedDivisionAxis } from '@/model/axes';
 import { CurveModel } from '@/model/curves/curve-model';
 import { useRange } from '@/view/composable/range-store';
+import Range from '@/view/controls/Range.vue';
 
 const props = defineProps<{
 	curves: CurveModel[]
@@ -26,12 +27,12 @@ const xstops = computed(() => {
 
 function buildChart() {
 
-	const data = new google.visualization.DataTable();
-
 	if (!graphEl.value) {
-		console.log(`chart not ready.`);
+		console.warn(`chart not ready.`);
 		return;
 	}
+
+	const data = new google.visualization.DataTable();
 
 	data.addColumn('number', 'level');
 	const curves = props.curves;
@@ -51,6 +52,7 @@ function buildChart() {
 	const newChart = new google.visualization.LineChart(graphEl.value!);
 	newChart.draw(data, {
 		curveType: 'none',
+
 	});
 	dataTable.value = data;
 
@@ -60,6 +62,9 @@ onMounted(() => {
 	if (props.curves.length) buildChart();
 })
 
+watch(range, (v) => {
+	buildChart();
+})
 watch(() => props.curves, (list) => {
 	buildChart();
 });
@@ -67,6 +72,11 @@ watch(() => props.curves, (list) => {
 </script>
 <template>
 
-	<div ref="graphEl"></div>
+	<div class="w-full h-full flex flex-col items-center">
+		<div class="grow" ref="graphEl"></div>
+		<div>
+			<Range title="x-range:" v-model="range" />
+		</div>
+	</div>
 
 </template>
