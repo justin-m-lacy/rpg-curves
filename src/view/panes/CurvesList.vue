@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { CurveModel } from '@/model/curves/curve-model';
 import { useCurves } from '@/store/curves-store';
+import LabelEditor from '@/view/controls/LabelEditor.vue';
 /// Select created curves to view.
 
 const props = defineProps();
@@ -22,8 +23,8 @@ function onDelete(c: CurveModel) {
 			}"
 			 @click="onSelect($event, c as CurveModel)">
 
-			<button @click="onDelete(c)" class="text-xs">❌</button>
-			<span>{{ c.label }}</span>
+			<button @click="onDelete(c as CurveModel)" class="text-xs">❌</button>
+			<LabelEditor v-model="c.label" />
 		</div>
 	</div>
 

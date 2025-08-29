@@ -47,10 +47,10 @@ function onChangeMax(val: string) {
 	<div class="flex gap-x-1 items-center text-sm">
 		<div v-if="title" class="font-semibold w-16">{{ title }}</div>
 		<label class="text-sm font-semibold">min</label>
-		<input type="number" class="text-sm w-20 py-1" :value="model[0]"
+		<input title="min" type="number" class="text-sm w-20 py-1" :value="model[0]"
 			   @change="onChangeMin($event.target.value)">
 		<label class="text-sm font-semibold">max</label>
-		<input type="number" class="text-sm w-20  py-1" :value="model[1]"
+		<input title="max" type="number" class="text-sm w-20  py-1" :value="model[1]"
 			   @change="onChangeMax($event.target.value)">
 	</div>
 </template>

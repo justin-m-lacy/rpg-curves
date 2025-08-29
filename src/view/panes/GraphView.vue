@@ -74,9 +74,7 @@ watch(() => props.curves, (list) => {
 
 	<div class="w-full h-full flex flex-col items-center">
 		<div class="grow" ref="graphEl"></div>
-		<div>
-			<Range title="x-range:" v-model="range" />
-		</div>
+		<Range title="x-range:" v-model="range" />
 	</div>
 
 </template>

@@ -2,6 +2,17 @@ import { CurveParam, TCurve } from "@/model/curves/curves";
 
 export class CurveModel {
 
+	toJSON() {
+		return {
+			label: this.label,
+			type: this._curve.type,
+			params: this.params.map(v => ({
+				prop: v.prop,
+				value: v.value,
+			}))
+		}
+	}
+
 	label: string;
 
 	readonly id: string;
