@@ -4,6 +4,7 @@ import { FixedDivisionAxis } from '@/model/axes';
 import { CurveModel } from '@/model/curves/curve-model';
 import { useRange } from '@/view/composable/range-store';
 import Range from '@/view/controls/Range.vue';
+import { useEventListener } from '@vueuse/core';
 
 const props = defineProps<{
 	curves: CurveModel[]
@@ -48,11 +49,8 @@ function zoomChart(pct: number) {
 	// prevent min/max overlap.
 	if (pct <= -0.4) pct = -0.4;
 
-	const amt = pct * (max - min);
-
-	range.value = [min - amt, max + amt];
-
-	buildChart();
+	pct *= (max - min);
+	range.value = [min - pct, max + pct];
 
 }
 
@@ -93,13 +91,21 @@ onMounted(() => {
 	if (props.curves.length) buildChart();
 })
 
-watch(range, (v) => {
-	buildChart();
-})
-watch(() => props.curves, (list) => {
-	buildChart();
+useEventListener(window, 'keydown', (evt: KeyboardEvent) => {
+
+	if (evt.key == 'ArrowLeft' || evt.key === 'ArrowRight') {
+
+		const [min, max] = range.value;
+		const amt = evt.key == 'ArrowLeft' ? -0.025 * (max - min) : 0.05 * (max - min);
+		range.value = [min + amt, max + amt];
+
+	}
+
 });
 
+watch(range, (_) => { buildChart(); });
+
+watch(() => props.curves, (_) => { buildChart(); });
 </script>
 <template>
 
