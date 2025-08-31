@@ -1,5 +1,5 @@
 {
-  "name": "voronoi",
+  "name": "rpgcurves",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,6 +11,7 @@
   "dependencies": {
     "@vueuse/core": "^10.11.1",
     "alea": "^1.0.1",
+    "d3": "^7.9.0",
     "pinia": "^2.1.7",
     "simplex-noise": "^4.0.3",
     "tailwindcss": "^4.1.12",
@@ -20,7 +21,6 @@
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/vite": "^4.1.12",
     "@types/delaunator": "^5.0.3",
-    "@types/google.visualization": "^0.0.74",
     "@types/node": "^22.13.5",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/cli-plugin-typescript": "~5.0.8",

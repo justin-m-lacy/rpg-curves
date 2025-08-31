@@ -58,6 +58,9 @@ export class CurveModel {
 
 	}
 
+	mapDomain(xvals: number[]) {
+		return xvals.map(x => this._curve.map(xvals[x]))
+	}
 	map(x: number): number { return this._curve.map(x) }
 
 	/**

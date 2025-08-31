@@ -16,8 +16,7 @@ const range = useDomain();
 const axis = shallowRef(new FixedCountDivider(20));
 
 const graphEl = shallowRef<HTMLElement>();
-type DataTable = google.visualization.DataTable;
-const dataTable = ref<DataTable | null>(null);
+const dataTable = ref<any | null>(null);
 
 /**
  * steps on the x-axis.
@@ -77,13 +76,6 @@ function buildChart() {
 		]);
 
 	}
-
-	const newChart = new google.visualization.LineChart(graphEl.value!);
-	newChart.draw(data, {
-		curveType: 'none',
-
-	});
-	dataTable.value = data;
 
 }
 

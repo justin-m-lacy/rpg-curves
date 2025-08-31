@@ -1,20 +1,15 @@
 type AxisScale = (t: number) => number;
 
-export interface IAxis {
-
-	/**
-	 * Maps range to point ticks on the axis.
-	 * @param range 
-	 */
-	getTicks(range: [number, number]): number[];
-
-}
+/**
+ * Divides an axis into an array of separate ticks points.
+ */
+export type IDivider = (range: [number, number]) => number[];
 
 
 /**
  * Axis with a fixed step between ticks.
  */
-export class FixedStepAxis {
+export class FixedStepDivider {
 
 	private _step: number = 1;
 	get step() { return this._step }
@@ -49,11 +44,14 @@ export class FixedStepAxis {
 
 }
 
+export const useTickCount = (domain: Ref<[number, number]>) => {
+
+}
 
 /**
  * Axis with a fixed number of divisions.
  */
-export class FixedDivisionAxis {
+export class FixedCountDivider {
 
 	private _divides: number = 1;
 	get divisions() { return this._divides }
