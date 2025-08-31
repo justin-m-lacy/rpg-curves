@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { CurveModel } from "@/model/curves/curve-model";
 import { UniqueColor } from "@/store/colors";
-import { useDomain } from "@/view/composable/range-store";
+import { useRange } from "@/view/composable/range-store";
 import { useZoom } from "@/view/composable/zoom";
 import { useEventListener } from "@vueuse/core";
 import * as d3 from "d3";
+import { getMinMax } from '../../util/array';
 
 const props = defineProps<{
 	curves: CurveModel[]
@@ -19,26 +20,11 @@ const outRect = shallowRef<DOMRect>();
 const marginLeft = 34;
 const marginBottom = 20;
 
-// range of x-axis
-const domain = useDomain(0, 30);
+// domain of x-axis
+const domain = useRange(0, 30);
+const range = useRange();
 
 useZoom(svgRef, domain);
-
-/**
- * domain for function computation.
- */
-const inTicks = computed(() => {
-	return xscale.value.ticks(20)
-});
-
-const colors = computed(() => props.curves.map(v => v.color));
-
-/**
- * domain of visual output.
- */
-const outDomain = computed(() => {
-	return inTicks.value.map(v => xscale.value(v));
-})
 
 const xscale = computed(() => {
 	return d3.scaleLinear().domain(domain.value).range(
@@ -46,8 +32,40 @@ const xscale = computed(() => {
 	);
 });
 
+/**
+ * domain of curve functions.
+ */
+const inTicks = computed(() => {
+
+	const vals = xscale.value.ticks(20);
+	computeRange(vals);
+
+	return vals;
+
+});
+
+const colors = computed(() => props.curves.map(v => v.color));
+
+/**
+ * Compute range from all input curves on input.
+ */
+function computeRange(xVals: number[]) {
+
+	const curves = props.curves;
+	const yRange: [number, number] = [Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER];
+
+	for (let i = curves.length - 1; i >= 0; i--) {
+		getMinMax(props.curves[i].mapDomain(xVals), yRange);
+	}
+
+	range.value = yRange;
+
+	console.log(`MIN,MAX: ${range.value[0]},${range.value[1]}`)
+
+}
+
 const yscale = computed(() => {
-	return d3.scaleLinear().domain([0, 50]).range([(outRect.value?.height ?? 0) - marginBottom, marginBottom]).nice()
+	return d3.scaleLinear().domain(range.value).range([(outRect.value?.height ?? 0) - marginBottom, marginBottom]).nice()
 });
 
 useEventListener(window, 'keydown', (evt: KeyboardEvent) => {
@@ -58,11 +76,16 @@ useEventListener(window, 'keydown', (evt: KeyboardEvent) => {
 		const amt = evt.key == 'ArrowLeft' ? -0.025 * (max - min) : 0.05 * (max - min);
 		domain.value = [min + amt, max + amt];
 
+	} else if (evt.key == 'ArrowUp' || evt.key === 'ArrowDown') {
+
+		const [min, max] = range.value;
+		const amt = evt.key == 'ArrowUp' ? -0.025 * (max - min) : 0.05 * (max - min);
+		range.value = [min + amt, max + amt];
+
 	}
 
+
 });
-
-
 
 watchEffect(() => {
 	if (!xAxisRef.value) return;
@@ -80,10 +103,13 @@ onMounted(() => {
 
 function makeLine(model: CurveModel) {
 
-	const xpts = outDomain.value;
+	const xTicks = inTicks.value;
+	// map inX,outY to scaled view values.
 	return d3.line<number>(
-		(_, i) => xpts[i],
-		(d, _) => d).curve(d3.curveBasis)(model.mapDomain(inTicks.value).map(v => yscale.value(v))) ?? '';
+		(_, i) => xscale.value(xTicks[i]),
+		(d, _) => yscale.value(d)).curve(d3.curveBasis)(
+			model.mapDomain(inTicks.value)
+		) ?? '';
 
 }
 </script>

@@ -2,7 +2,7 @@
 /// <reference types="@types/google.visualization" />
 import { CurveModel } from '@/model/curves/curve-model';
 import { FixedCountDivider } from '@/model/dividers';
-import { useDomain } from '@/view/composable/range-store';
+import { useRange } from '@/view/composable/range-store';
 import Range from '@/view/controls/Range.vue';
 import { useEventListener } from '@vueuse/core';
 
@@ -11,7 +11,7 @@ const props = defineProps<{
 }>();
 
 // range of x-axis
-const range = useDomain();
+const range = useRange();
 
 const axis = shallowRef(new FixedCountDivider(20));
 
