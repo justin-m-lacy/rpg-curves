@@ -14,6 +14,7 @@ export class CurveModel {
 	}
 
 	label: string;
+	color?: string;
 
 	readonly id: string;
 
@@ -24,10 +25,17 @@ export class CurveModel {
 
 	readonly params: CurveParam[] = [];
 
-	constructor(opts: { id?: string, label?: string, curve: TCurve<object>, params?: CurveParam[] }) {
+	constructor(opts: {
+		id?: string,
+		label?: string,
+		color?: string,
+		curve: TCurve<object>,
+		params?: CurveParam[]
+	}) {
 
 		this.id = opts.id ?? window.crypto.randomUUID();
 
+		this.color = opts.color;
 		this._curve = opts.curve; // typescript complaint
 		this.setCurve(opts.curve, opts.params);
 		this.label = opts.label ?? 'new curve';

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-/// <reference types="@types/google.visualization" />
-
 import { CurveModel } from '@/model/curves/curve-model';
 import { useCreators } from '@/store/creators';
 import { useCurves } from '@/store/curves-store';
@@ -11,13 +9,9 @@ import CurveEditor from '@/view/panes/CurveEditor.vue';
 import CurvesList from '@/view/panes/CurvesList.vue';
 import D3GraphView from '@/view/panes/D3GraphView.vue';
 
-
-const chartsLoaded = shallowRef(false);
-
 const creators = useCreators();
 const select = useSelect();
 
-const chartEl = shallowRef<HTMLCanvasElement>();
 const curves = useCurves();
 
 function onNewCurve(model: CurveModel) {
@@ -25,14 +19,6 @@ function onNewCurve(model: CurveModel) {
 	curves.add(model);
 	select.select(model);
 }
-
-watch(chartEl, (el) => {
-	if (!el) return;
-});
-
-onMounted(() => {
-});
-
 </script>
 <template>
 

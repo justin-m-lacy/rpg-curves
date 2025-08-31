@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /// <reference types="@types/google.visualization" />
-import { FixedCountDivider } from '@/model/axes';
 import { CurveModel } from '@/model/curves/curve-model';
+import { FixedCountDivider } from '@/model/dividers';
 import { useDomain } from '@/view/composable/range-store';
 import Range from '@/view/controls/Range.vue';
 import { useEventListener } from '@vueuse/core';

@@ -4,11 +4,13 @@ import { quadCreator } from '@/model/creators/quad';
 import { CurveModel } from '@/model/curves/curve-model';
 import { CurveCreator } from '@/model/curves/curves';
 import { defineStore } from 'pinia';
+import { GetColor } from './colors';
 
 export const useCreators = defineStore('curve', () => {
 
 	const creators = new Map<string, CurveCreator<any>>();
 
+	let colorIndex: number = 0;
 	function register(...params: CurveCreator<any>[]) {
 		for (const c of params) {
 			creators.set(c.type, c);
@@ -22,7 +24,10 @@ export const useCreators = defineStore('curve', () => {
 		const curve = creator.create();
 		curve.type = type;
 
-		return new CurveModel({ label, curve, params: creator.params, });
+		return new CurveModel({
+			label, curve, params: creator.params,
+			color: GetColor(colorIndex++)
+		});
 
 	}
 
