@@ -18,14 +18,14 @@ function onDelete(c: CurveModel) {
 
 </script>
 <template>
-	<div class="flex flex-col gap-y-1.5">
+	<div class="flex flex-col gap-y-3">
 		<div v-for="c in curves.curves.values()"
-			 class="flex gap-x-2" :class="{
+			 class="flex items-center gap-x-2 py-0" :class="{
 				'font-bold': select.isSelected(c as CurveModel)
 			}"
 			 @click="onSelect($event, c as CurveModel)">
 
-			<button @click="onDelete(c as CurveModel)" class="text-xs">❌</button>
+			<button @click="onDelete(c as CurveModel)" class="text-[0.5rem]">❌</button>
 			<LabelEditor v-model="c.label" />
 		</div>
 	</div>

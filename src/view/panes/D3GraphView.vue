@@ -3,6 +3,7 @@ import { CurveModel } from "@/model/curves/curve-model";
 import { UniqueColor } from "@/store/colors";
 import { useRange } from "@/view/composable/range-store";
 import { useZoom } from "@/view/composable/zoom";
+import Range from "@/view/controls/Range.vue";
 import { useEventListener } from "@vueuse/core";
 import * as d3 from "d3";
 import { getMinMax } from '../../util/array';
@@ -17,8 +18,8 @@ const yAxisRef = shallowRef<SVGGElement>();
 
 const outRect = shallowRef<DOMRect>();
 // padding for display.
-const marginLeft = 34;
-const marginBottom = 20;
+const marginLeft = 64;
+const marginBottom = 24;
 
 // domain of x-axis
 const domain = useRange(0, 30);
@@ -29,7 +30,7 @@ useZoom(svgRef, domain);
 const xscale = computed(() => {
 	return d3.scaleLinear().domain(domain.value).range(
 		[marginLeft, -marginLeft + (outRect.value?.width ?? 0)]
-	);
+	).nice();
 });
 
 /**
@@ -60,8 +61,6 @@ function computeRange(xVals: number[]) {
 
 	range.value = yRange;
 
-	console.log(`MIN,MAX: ${range.value[0]},${range.value[1]}`)
-
 }
 
 const yscale = computed(() => {
@@ -73,13 +72,13 @@ useEventListener(window, 'keydown', (evt: KeyboardEvent) => {
 	if (evt.key == 'ArrowLeft' || evt.key === 'ArrowRight') {
 
 		const [min, max] = domain.value;
-		const amt = evt.key == 'ArrowLeft' ? -0.025 * (max - min) : 0.05 * (max - min);
+		const amt = evt.key == 'ArrowLeft' ? -0.025 * (max - min) : 0.025 * (max - min);
 		domain.value = [min + amt, max + amt];
 
 	} else if (evt.key == 'ArrowUp' || evt.key === 'ArrowDown') {
 
 		const [min, max] = range.value;
-		const amt = evt.key == 'ArrowUp' ? -0.025 * (max - min) : 0.05 * (max - min);
+		const amt = evt.key == 'ArrowDown' ? -0.1 * (max - min) : 0.1 * (max - min);
 		range.value = [min + amt, max + amt];
 
 	}
@@ -108,17 +107,20 @@ function makeLine(model: CurveModel) {
 	return d3.line<number>(
 		(_, i) => xscale.value(xTicks[i]),
 		(d, _) => yscale.value(d)).curve(d3.curveBasis)(
-			model.mapDomain(inTicks.value)
+			model.mapDomain(xTicks)
 		) ?? '';
 
 }
 </script>
 <template>
-	<svg ref="svgRef" class="h-full w-full">
-		<g ref="xAxisRef" :transform="`translate(0, ${-marginBottom + (outRect?.height ?? 0)})`" />
-		<g ref="yAxisRef" :transform="`translate(${marginLeft}, 0)`" />
-		<path v-for="(model, ind) in curves" fill="none" strokeWidth="1.5"
-			  :stroke="model.color ?? UniqueColor(ind, colors)"
-			  :d="makeLine(model)" />
-	</svg>
+	<div class="flex flex-col w-full h-full items-center">
+		<svg ref="svgRef" class="grow w-full">
+			<g ref="xAxisRef" :transform="`translate(0, ${-marginBottom + (outRect?.height ?? 0)})`" />
+			<g ref="yAxisRef" :transform="`translate(${marginLeft}, 0)`" />
+			<path v-for="(model, ind) in curves" fill="none" strokeWidth="1.5"
+				  :stroke="model.color ?? UniqueColor(ind, colors)"
+				  :d="makeLine(model)" />
+		</svg>
+		<Range title="x-range:" v-model="domain" />
+	</div>
 </template>

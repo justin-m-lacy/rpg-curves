@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const model = defineModel<string>();
 
-const inputRef = shallowRef<HTMLElement>();
+const inputRef = shallowRef<HTMLInputElement>();
 const editing = shallowRef(false);
 
 function onClick(evt: MouseEvent) {
@@ -15,6 +15,7 @@ function setEditing(edit: boolean) {
 	nextTick(() => {
 		if (edit) {
 			window.addEventListener('pointerdown', onClick, { passive: true });
+			inputRef.value?.select();
 		} else {
 			window.removeEventListener('pointerdown', onClick);
 		}
@@ -23,10 +24,12 @@ function setEditing(edit: boolean) {
 }
 </script>
 <template>
-	<input ref="inputRef" v-if="editing" type="text" class="bg-white" v-model="model"
+	<input v-if="editing" ref="inputRef" type="text"
+		   class="bg-white px-0 py-0 my-0 border-0 w-full
+		   	selection:border-0 selection:outline-none outline-none" size="16" v-model="model"
 		   @blur="setEditing(false)"
 		   @onchanged="setEditing(false)">
-	<div v-else @click="setEditing(true)">
+	<div v-else class="py-0 my-0" @click="setEditing(true)">
 		{{ model }}
 	</div>
 </template>
