@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CurveModel } from '@/model/curves/curve-model';
+import { CurveModel } from '@/model/curve-model';
 import { CurveCreator } from '@/model/curves/curves';
 import { useCreators } from '@/store/creators';
 import CurveSelector from '@/view/controls/CurveSelector.vue';

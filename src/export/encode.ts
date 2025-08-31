@@ -1,4 +1,4 @@
-import { CurveModel } from "@/model/curves/curve-model";
+import { CurveModel } from "@/model/curve-model";
 
 export const encodeCurves = (curves: Map<string, CurveModel>) => {
 

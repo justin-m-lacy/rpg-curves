@@ -1,8 +1,6 @@
 
 export abstract class CurveBase {
 
-	name: string = '';
-
 	type: string;
 
 	constructor(type?: string) {
@@ -15,7 +13,7 @@ export abstract class CurveBase {
 		const step = (range[1] - range[0]) / steps;
 
 		let x = range[0], yval: number;
-		return new Array(steps + 1).map((_, i) => {
+		return new Array(steps + 1).map((_) => {
 			yval = this.map(x);
 			x += step;
 			return yval;

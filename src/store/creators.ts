@@ -1,7 +1,7 @@
 import { expCreator, natExpCreator } from '@/model/creators/exp';
 import { linearCreator } from '@/model/creators/linear';
 import { quadCreator } from '@/model/creators/quad';
-import { CurveModel } from '@/model/curves/curve-model';
+import { CurveModel } from '@/model/curve-model';
 import { CurveCreator } from '@/model/curves/curves';
 import { defineStore } from 'pinia';
 import { GetColor } from './colors';

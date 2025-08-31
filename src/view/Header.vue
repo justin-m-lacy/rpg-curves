@@ -2,7 +2,7 @@
 import { decodeCurves } from '@/export/decode';
 import { encodeCurves } from '@/export/encode';
 import { loadJsonStr, useFileLink } from '@/export/files';
-import { CurveModel } from '@/model/curves/curve-model';
+import { CurveModel } from '@/model/curve-model';
 import { useCurves } from '@/store/curves-store';
 import { useFileSelect } from '@/view/composable/file-select';
 

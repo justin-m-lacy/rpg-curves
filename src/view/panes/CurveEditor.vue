@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CurveModel } from '@/model/curves/curve-model';
+import { CurveModel } from '@/model/curve-model';
 import { CurveCreator } from '@/model/curves/curves';
 import { useCreators } from '@/store/creators';
 import CurveSelector from '@/view/controls/CurveSelector.vue';
@@ -10,7 +10,6 @@ const props = defineProps<{
 }>();
 
 const creators = useCreators();
-const curve = computed(() => props.model.curve);
 
 function onChangeCurve(creator?: CurveCreator) {
 
@@ -38,11 +37,13 @@ function onChangeCurve(creator?: CurveCreator) {
 
 		</div>
 		<div v-for="param in model.params" class="flex gap-x-2 gap-y-2 items-center">
-			<template v-if="param.prop in curve">
+			<template v-if="model.isValidParam(param)">
 				<div class="text-xs font-semibold">Param {{ param.name ?? param.prop }}</div>
 				<label class="text-xs">value: </label>
 				<input type="number" class="text-xs flex items-center py-2"
-					   v-model="curve[param.prop as keyof typeof curve]"
+					   :value="model.getParamValue(param.prop)"
+					   @change="model.setParam(param.prop,
+						Number(($event.target as HTMLInputElement).value))"
 					   :min="param.min"
 					   :max="param.max">
 			</template>

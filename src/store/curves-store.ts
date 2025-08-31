@@ -1,4 +1,4 @@
-import { CurveModel } from '@/model/curves/curve-model';
+import { CurveModel } from '@/model/curve-model';
 import { useSelect } from '@/store/select-store';
 import { defineStore } from 'pinia';
 

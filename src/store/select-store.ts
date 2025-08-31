@@ -1,4 +1,4 @@
-import { CurveModel } from '@/model/curves/curve-model';
+import { CurveModel } from '@/model/curve-model';
 import { defineStore } from 'pinia';
 
 export const useSelect = defineStore('select', () => {

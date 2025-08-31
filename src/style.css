@@ -19,6 +19,10 @@
 	  margin: 0; 
 	}
 
+	input[type=text]{
+		@apply outline-none border-0 selection:border-0 selection:outline-none;
+	}
+
 	input[type=number]{
 		-moz-appearance: textfield;
 		@apply border-none outline-none

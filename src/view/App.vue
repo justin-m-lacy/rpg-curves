@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CurveModel } from '@/model/curves/curve-model';
+import { CurveModel } from '@/model/curve-model';
 import { useCreators } from '@/store/creators';
 import { useCurves } from '@/store/curves-store';
 import { useSelect } from '@/store/select-store';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CurveModel } from "@/model/curves/curve-model";
+import { CurveModel } from "@/model/curve-model";
 import { UniqueColor } from "@/store/colors";
 import { useRange } from "@/view/composable/range-store";
 import { useZoom } from "@/view/composable/zoom";

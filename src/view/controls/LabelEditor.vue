@@ -25,8 +25,7 @@ function setEditing(edit: boolean) {
 </script>
 <template>
 	<input v-if="editing" ref="inputRef" type="text"
-		   class="bg-white px-0 py-0 my-0 border-0 w-full
-		   	selection:border-0 selection:outline-none outline-none" size="16" v-model="model"
+		   class="bg-white px-0 py-0 my-0 w-full" size="16" v-model="model"
 		   @blur="setEditing(false)"
 		   @onchanged="setEditing(false)">
 	<div v-else class="py-0 my-0" @click="setEditing(true)">

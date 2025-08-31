@@ -6,24 +6,20 @@ export class CurveModel {
 		return {
 			label: this.label,
 			type: this._curve.type,
-			params: this.params.map(v => ({
-				prop: v.prop,
-				value: v.value,
-			}))
+			params: this.params
 		}
 	}
-
-	label: string;
-	color?: string;
 
 	readonly id: string;
 
 	get type() { return this._curve.type }
 
-	get curve() { return this._curve }
 	private _curve: TCurve<object>;
 
-	readonly params: CurveParam[] = [];
+	readonly params: Record<string, CurveParam> = {};
+
+	label: string;
+	color?: string;
 
 	constructor(opts: {
 		id?: string,
@@ -37,9 +33,13 @@ export class CurveModel {
 
 		this.color = opts.color;
 		this._curve = opts.curve; // typescript complaint
-		this.setCurve(opts.curve, opts.params);
 		this.label = opts.label ?? 'new curve';
+		this.setCurve(opts.curve, opts.params);
 
+	}
+
+	isValidParam(param: CurveParam) {
+		return param.prop in this._curve;
 	}
 
 	/**
@@ -52,9 +52,9 @@ export class CurveModel {
 	setCurve(c: TCurve<any>, newParams?: CurveParam[]) {
 
 		this._curve = c;
-		for (const cp of this.params) {
-			if ((cp.prop in c) && typeof c[cp.prop] == 'number') {
-				c[cp.prop] = cp.value;
+		for (const prop in this.params) {
+			if ((prop in c) && typeof c[prop] == 'number') {
+				c[prop] = this.params[prop].value;
 			}
 		}
 
@@ -67,20 +67,26 @@ export class CurveModel {
 	}
 
 	mapDomain(xvals: number[]) {
-		return xvals.map(x => this._curve.map(x))
+		return xvals.map(x => this.map(x))
 	}
 	map(x: number): number { return this._curve.map(x) }
+
+	getParamValue(prop: string) {
+
+		if (prop in this._curve &&
+			typeof this._curve[prop as keyof typeof this._curve] == 'number') {
+			return this._curve[prop as keyof typeof this._curve] as any as number;
+		}
+		return undefined;
+
+	}
 
 	/**
 	 * Set matching params from list. invalid parameters are ignored.
 	 * @param arr 
 	 */
 	setParams(arr: { prop: string, value: number }[]) {
-
-		arr.forEach(v => {
-			this.setParam(v.prop, v.value)
-		});
-
+		arr.forEach(v => this.setParam(v.prop, v.value));
 	}
 
 	/**
@@ -90,39 +96,34 @@ export class CurveModel {
 	 * @returns 
 	 */
 	setParam(prop: string, value: number) {
-		const param = this.params.find(v => v.prop == prop);
+		const param = this.params[prop];
 		if (!param) return;
 		(this._curve as any)[prop] = param.value = value;
 	}
 
 	/**
-	 * Adds a clone of the curve param to this params.
+	 * If param does not yet exist on model, adds a clone to this params.
+	 * Sets curve's current property value to parameter value.
 	 * @param p - original param.
-	 * @returns existing matching param, or cloned param
-	 * added to this curve.
+	 * @returns this new or preexisting parameter.
 	 */
 	addParam(p: CurveParam) {
 
-		let cp = this.params.find(v => v.prop == p.prop);
-		if (!cp) {
-			cp = { ...p };
-			this.params.push(cp);
-		}
+		const cp = this.params[p.prop] ?? { ...p };
+		this.params[p.prop] = cp;
+
 		// avoid typescript complaint
 		const curve = this._curve as TCurve<any>
-		if ((cp.prop in curve) && (typeof curve[cp.prop] === 'number')) {
-			cp.value = curve[cp.prop];
+		if ((p.prop in curve) && (typeof curve[p.prop] === 'number')) {
+			curve[p.prop] = cp.value;
 		}
 		return cp;
 
 	}
 
 	removeParam(prop: string | CurveParam) {
-
 		if (typeof prop !== 'string') prop = prop.prop;
-		const ind = this.params.findIndex(v => v.prop == prop);
-		if (ind >= 0) this.params.splice(ind, 1);
-
+		delete this.params[prop];
 	}
 
 }

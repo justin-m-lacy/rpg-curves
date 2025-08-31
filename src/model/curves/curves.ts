@@ -11,8 +11,6 @@ export type CurveCreator<D extends object = any> = {
 }
 
 export type TCurve<D extends object> = D & {
-
-	name?: string;
 	type: string;
 	map(x: number): number;
 }
@@ -20,7 +18,7 @@ export type TCurve<D extends object> = D & {
 export type ICurve = new (obj?: any) => TCurve<any>;
 export type CurveParam<T extends object = any> = {
 	prop: string & keyof T,
-	desc: string,
+	desc?: string,
 	value: number;
 	name?: string,
 	min?: number,
