@@ -17,6 +17,10 @@ export const abbr = (it?: { name?: string }) => {
 
 }
 
+export const round = (v: number, places: number = 1) => {
+  return Math.round(Math.pow(10, places) * v) / Math.pow(10, places);
+}
+
 /**
  * Returns number as integer if integer, or else precise.
  * @param v 

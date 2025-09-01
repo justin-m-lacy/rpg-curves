@@ -30,6 +30,76 @@ useZoom(svgRef, domain);
 
 const selects = useSelect();
 
+/**
+ * mouse x,y relative to svg and the input domains.
+ */
+const svgPt = reactive({ x: 0, y: 0, domX: 0, domY: 0 });
+
+const mouseIn = ref(false);
+
+function mouseToGraph(x: number, y: number) {
+	return [x - outRect.value!.left, y - outRect.value!.top];
+}
+
+function onMouseEnter() {
+	mouseIn.value = true;
+}
+function onMouseLeave() {
+	mouseIn.value = false;
+}
+
+function onMouseMove(event: MouseEvent) {
+
+	const roundTo = (domain.value[1] - domain.value[0]) / 20;
+
+	[svgPt.x, svgPt.y] = mouseToGraph(event.clientX, event.clientY);
+	svgPt.domX = roundTo * Math.round(xscale.value.invert(svgPt.x) / roundTo);
+	svgPt.domY = yscale.value.invert(svgPt.y);
+
+	const nearest = nearestCurve(svgPt.domX, svgPt.domY);
+	if (nearest) {
+		svgPt.domY = nearest?.map(svgPt.domX)
+	}
+
+	svgPt.domY = Math.round(10 * svgPt.domY) / 10;
+
+
+	svgPt.x = xscale.value(svgPt.domX) - 10;
+	svgPt.y = yscale.value(svgPt.domY) - 10;
+
+	//svgPt.domX = domX; //Math.round(xscale.value.invert(local[0]) * 10) / 10;
+	//svgPt.domY = domY; //Math.round(yscale.value.invert(local[1]) * 10) / 10;
+
+}
+
+/**
+ * Get closest output x,y point of all selected curves,
+ * or of all curves if none selected.
+ * @param domX 
+ * @param domY 
+ */
+function nearestCurve(domX: number, domY: number) {
+
+	const list = (selects.selected.length ? selects.selected : props.curves) as CurveModel[];
+	if (!list.length) return undefined;
+
+	let best: CurveModel = list[0];
+	let bestY = Math.abs(best.map(domX) - domY);
+
+	for (let i = list.length - 1; i > 0; i--) {
+
+		const del = Math.abs(list[i].map(domX) - domY)
+		if (del < bestY) {
+			best = list[i];
+			bestY = del;
+		}
+
+	}
+
+	return best;
+
+}
+
 const xscale = computed(() => {
 	return d3.scaleLinear().domain(domain.value).range(
 		[marginLeft, -marginLeft + (outRect.value?.width ?? 0)]
@@ -116,16 +186,24 @@ function makeLine(model: CurveModel) {
 </script>
 <template>
 
-	<svg ref="svgRef" class="w-full">
+	<svg ref="svgRef" class="w-full"
+		 @pointermove="onMouseMove"
+		 @mouseenter="onMouseEnter"
+		 @mouseleave="onMouseLeave">
 		<g ref="xAxisRef" class="select-none"
 		   :transform="`translate(0, ${-marginBottom + (outRect?.height ?? 0)})`" />
 		<g ref="yAxisRef" class="select-none"
 		   :transform="`translate(${marginLeft}, 0)`" />
+		<text v-if="mouseIn" class="select-none pointer-events-none"
+			  :x="svgPt.x" :y="svgPt.y" font-size="10" fill="black">
+			{{ svgPt.domX }}, {{ svgPt.domY }}
+		</text>
 		<path v-for="(model) in curves" fill="none" stroke-width="12"
 			  stroke="transparent"
 			  @click="selects.toggleSelect(model)"
 			  :d="makeLine(model)" />
-		<path v-for="(model, ind) in curves" fill="none" :stroke-width="selects.isSelected(model) ? 2.5 : 1.5"
+		<path v-for="(model, ind) in curves" fill="none"
+			  :stroke-width="selects.isSelected(model) ? 2.5 : 1.5"
 			  :stroke="model.color ?? UniqueColor(ind, colors)"
 			  @click="selects.toggleSelect(model)"
 			  :d="makeLine(model)" />
