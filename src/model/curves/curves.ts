@@ -10,7 +10,7 @@ export type CurveCreator<D extends object = any> = {
 	params: CurveParam<D>[]
 }
 
-export type TCurve<D extends object> = D & {
+export type TCurve<D extends object = object> = D & {
 	type: string;
 	map(x: number): number;
 }

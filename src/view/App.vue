@@ -3,6 +3,7 @@ import { CurveModel } from '@/model/curve-model';
 import { useCreators } from '@/store/creators';
 import { useCurves } from '@/store/curves-store';
 import { useSelect } from '@/store/select-store';
+import { useViewCurves } from '@/store/view-curves';
 import NewCurve from '@/view/controls/NewCurve.vue';
 import Header from '@/view/Header.vue';
 import CurveEditor from '@/view/panes/CurveEditor.vue';
@@ -11,13 +12,13 @@ import D3GraphView from '@/view/panes/D3GraphView.vue';
 
 const creators = useCreators();
 const select = useSelect();
+const view = useViewCurves();
 
 const curves = useCurves();
 
 function onNewCurve(model: CurveModel) {
 	model.label = curves.uniqueName();
 	curves.add(model);
-	select.select(model);
 }
 </script>
 <template>
@@ -34,7 +35,7 @@ function onNewCurve(model: CurveModel) {
 			<div class="h-full flex flex-col gap-y-1 grow-4">
 				<!--<GraphView v-if="chartsLoaded" class="basis-1/2"
 						   :curves="select.selected" />-->
-				<D3GraphView class="basis-1/2" :curves="select.selected" />
+				<D3GraphView class="basis-1/2" :curves="view.viewing" />
 				<div class="flex flex-wrap gap-y-3">
 					<CurveEditor v-for="curve in select.selected" class="flex justify-stretch"
 								 :model="curve" :key="curve.id" />

@@ -2,26 +2,26 @@ import { CurveModel } from "@/model/curve-model";
 import { CurveParam, TCurve } from "@/model/curves/curves";
 
 /**
- * Implements sum of two curves, A*C1 + B*C2
+ * Implements linear combination of two curves, A*C1 + B*C2
  */
 export class CurveSumModel extends CurveModel {
 
 	get type() { return 'curvesum' }
 
-	private curveA: TCurve<object>;
-	private curveB: TCurve<object>;
+	private curveA: TCurve;
+	private curveB: TCurve;
 
 	A: number = 1;
 	B: number = 1;
 
 	constructor(opts: {
+		curveA: TCurve,
+		curveB: TCurve,
 		id?: string,
 		label?: string,
 		color?: string,
-		A: number,
-		B: number,
-		curveA: CurveModel,
-		curveB: CurveModel,
+		A?: number,
+		B?: number,
 		params?: CurveParam[]
 	}) {
 

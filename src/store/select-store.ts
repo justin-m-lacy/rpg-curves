@@ -1,4 +1,5 @@
 import { CurveModel } from '@/model/curve-model';
+import { useEventBus } from '@vueuse/core';
 import { defineStore } from 'pinia';
 
 export const useSelect = defineStore('select', () => {
@@ -31,6 +32,14 @@ export const useSelect = defineStore('select', () => {
 	function isSelected(c: CurveModel) {
 		return selected.value.some(v => v.id == c.id);
 	}
+	function toggleSelect(m: CurveModel) {
+		selected.value.includes(m) ? deselect(m) :
+			select(m);
+	}
+
+	useEventBus<'deletecurve', CurveModel>('deletecurve').on((_, m) => {
+		if (m) deselect(m);
+	});
 
 	return {
 
@@ -39,6 +48,7 @@ export const useSelect = defineStore('select', () => {
 		deselect,
 		clear,
 		isSelected,
+		toggleSelect
 
 
 	}
