@@ -11,6 +11,7 @@ export type CurveCreator<D extends object = any> = {
 }
 
 export type TCurve<D extends object = object> = D & {
+	label?: string;
 	type: string;
 	map(x: number): number;
 }

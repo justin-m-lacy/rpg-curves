@@ -24,8 +24,7 @@ const onCreate = () => {
 <template>
 	<div class="flex gap-x-2 justify-between items-center">
 		<CurveSelector v-model="creator" />
-		<button type="button" class="bg-cyan-600/30 text-sm
-			font-semibold px-1.5 py-1 my-0 rounded-lg"
+		<button type="button" class="btn"
 				@click="onCreate">Create</button>
 	</div>
 

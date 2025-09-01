@@ -33,9 +33,11 @@ export class CurveSumModel extends CurveModel {
 			params: opts.params
 		});
 
+
 		this.curveA = opts.curveA;
 		this.curveB = opts.curveB;
 		this.setCurve(this);
+
 
 		this.addParam({
 			prop: 'A',
@@ -45,6 +47,10 @@ export class CurveSumModel extends CurveModel {
 			prop: 'B',
 			value: opts.B ?? 1
 		})
+
+		this.label = opts.label ?? (this.curveA?.label ?? this.curveA.type) +
+			(this.A < 0 || this.B < 0 ? ' - ' : ' + ') + (this.curveB?.label ?? this.curveB.type);
+
 
 	}
 

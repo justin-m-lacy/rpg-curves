@@ -26,7 +26,7 @@ function onNewCurve(model: CurveModel) {
 	<div class="flex flex-col h-screen w-full">
 		<Header></Header>
 
-		<div class="h-full flex gap-x-2 justify-stretch items-stretch">
+		<div class="h-full flex gap-x-2 justify-stretch items-start">
 			<div class="flex flex-col gap-y-1.5 p-2 py-4 min-w-36 w-40 bg-white/75 min-h-full">
 				<NewCurve @newCurve="onNewCurve" />
 				<CurvesList />
@@ -35,9 +35,9 @@ function onNewCurve(model: CurveModel) {
 			<div class="h-full flex flex-col gap-y-1 grow-4">
 				<!--<GraphView v-if="chartsLoaded" class="basis-1/2"
 						   :curves="select.selected" />-->
-				<D3GraphView class="basis-1/2" :curves="view.viewing" />
+				<D3GraphView :curves="view.viewing" class="max-h-7/12" />
 				<div class="flex flex-wrap gap-y-3">
-					<CurveEditor v-for="curve in select.selected" class="flex justify-stretch"
+					<CurveEditor v-for="curve in select.selected" class="flex"
 								 :model="curve" :key="curve.id" />
 				</div>
 			</div>

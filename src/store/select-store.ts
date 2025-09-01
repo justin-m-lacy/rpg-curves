@@ -32,9 +32,9 @@ export const useSelect = defineStore('select', () => {
 	function isSelected(c: CurveModel) {
 		return selected.value.some(v => v.id == c.id);
 	}
-	function toggleSelect(m: CurveModel) {
+	function toggleSelect(m: CurveModel, multi?: boolean) {
 		selected.value.includes(m) ? deselect(m) :
-			select(m);
+			select(m, multi);
 	}
 
 	useEventBus<'deletecurve', CurveModel>('deletecurve').on((_, m) => {

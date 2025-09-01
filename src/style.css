@@ -29,7 +29,10 @@
 		placeholder:text-amber-950/60
 		text-amber-950;
 	  }
-	
+
+	  .btn {
+		@apply font-semibold bg-cyan-600/30 text-sm px-1.5 py-1 rounded-lg;
+	  }
 }
 
 body {

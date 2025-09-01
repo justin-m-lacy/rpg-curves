@@ -44,12 +44,12 @@ function onChangeMax(val: string) {
 
 </script>
 <template>
-	<div class="flex gap-x-1 items-center text-sm">
-		<div v-if="title" class="font-semibold w-16">{{ title }}</div>
-		<label class="text-sm font-semibold">min</label>
+	<div class="flex gap-x-1 items-center text-sm  select-none">
+		<div v-if="title" class="font-semibold w-16 pointer-events-none">{{ title }}</div>
+		<label class="text-sm font-semibold pointer-events-none">min</label>
 		<input title="min" type="number" class="text-sm w-20 py-1" :value="model?.[0] ?? 0"
 			   @change="onChangeMin(($event.target as HTMLInputElement).value)">
-		<label class="text-sm font-semibold">max</label>
+		<label class="text-sm font-semibold pointer-events-none">max</label>
 		<input title="max" type="number" class="text-sm w-20  py-1" :value="model?.[1] ?? 100"
 			   @change="onChangeMax(($event.target as HTMLInputElement).value)">
 	</div>

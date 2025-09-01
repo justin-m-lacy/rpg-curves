@@ -9,7 +9,7 @@ import * as d3 from "d3";
 import { getMinMax } from '../../util/array';
 
 const props = defineProps<{
-	curves: CurveModel[]
+	curves: CurveModel[],
 }>();
 
 // svg drawn elements.
@@ -23,7 +23,7 @@ const marginLeft = 64;
 const marginBottom = 24;
 
 // domain of x-axis
-const domain = defineModel<[number, number]>('range', { default: [0, 30] });
+const domain = defineModel<[number, number]>('domain', { default: [0, 30] });
 const range = useRange();
 
 useZoom(svgRef, domain);
@@ -116,12 +116,16 @@ function makeLine(model: CurveModel) {
 </script>
 <template>
 
-	<svg ref="svgRef" class="grow w-full">
-		<g ref="xAxisRef"
+	<svg ref="svgRef" class="w-full">
+		<g ref="xAxisRef" class="select-none"
 		   :transform="`translate(0, ${-marginBottom + (outRect?.height ?? 0)})`" />
-		<g ref="yAxisRef"
+		<g ref="yAxisRef" class="select-none"
 		   :transform="`translate(${marginLeft}, 0)`" />
-		<path v-for="(model, ind) in curves" fill="none" strokeWidth="1.5"
+		<path v-for="(model) in curves" fill="none" stroke-width="12"
+			  stroke="transparent"
+			  @click="selects.toggleSelect(model)"
+			  :d="makeLine(model)" />
+		<path v-for="(model, ind) in curves" fill="none" :stroke-width="selects.isSelected(model) ? 2.5 : 1.5"
 			  :stroke="model.color ?? UniqueColor(ind, colors)"
 			  @click="selects.toggleSelect(model)"
 			  :d="makeLine(model)" />

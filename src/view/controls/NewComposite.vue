@@ -29,18 +29,19 @@ function tryCreate() {
 }
 </script>
 <template>
-	<div class="flex gap-x-2">
-		<select v-model="compositeType">
+	<div class="flex gap-x-2 text-sm items-center">
+		<select v-model="compositeType" class="py-0.5 my-0 text-xs w-20">
 			<option :value="'curvesum'">Sum</option>
 			<option :value="'curvediff'">Subtract</option>
 		</select>
-		<select v-model="modelA">
+		<select v-model="modelA" class="py-0.5 my-0 text-xs w-20">
 			<option v-for="m in curves" :value="m">{{ m.label }}</option>
 		</select>
-		<select v-model="modelB">
+		<select v-model="modelB" class="py-0.5 my-0 text-xs w-20">
 			<option v-for="m in curves" :value="m">{{ m.label }}</option>
 		</select>
-		<button type="button" :disabled="!modelA || !modelB"
+		<button type="button" class="btn"
+				:disabled="!modelA || !modelB"
 				@click="tryCreate">Create</button>
 	</div>
 </template>

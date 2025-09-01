@@ -18,7 +18,10 @@ export class CurveModel {
 
 	readonly params: Record<string, CurveParam> = {};
 
-	label: string;
+	get label() { return this._label }
+	set label(v) { this._label = v }
+	protected _label: string;
+
 	color?: string;
 
 	constructor(opts: {
@@ -33,7 +36,7 @@ export class CurveModel {
 
 		this.color = opts.color;
 		this._curve = opts.curve; // typescript complaint
-		this.label = opts.label ?? 'new curve';
+		this._label = opts.label ?? 'new curve';
 		this.setCurve(opts.curve, opts.params);
 
 	}
