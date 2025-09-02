@@ -15,6 +15,13 @@
 
 @layer components {
 
+	select {
+		-webkit-appearance: none; /* For Safari and Chrome */
+    	-moz-appearance: none; /* For Firefox */
+    	appearance: none; /* Standard syntax */
+		background: none;
+	}
+
 	input[type=number]::-webkit-inner-spin-button, 
 	input[type=number]::-webkit-outer-spin-button { 
 	  -webkit-appearance: none; 
@@ -33,7 +40,8 @@
 	  }
 
 	  .btn {
-		@apply font-semibold bg-cyan-600/30 text-sm px-1.5 py-1 rounded-lg;
+		@apply font-semibold bg-cyan-600/30 text-sm px-1.5 py-1 rounded-lg
+			hover:bg-cyan-600/55 disabled:bg-cyan-600/15;
 	  }
 }
 

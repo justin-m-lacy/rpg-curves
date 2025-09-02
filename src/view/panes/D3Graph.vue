@@ -18,7 +18,7 @@ const yAxisRef = shallowRef<SVGGElement>();
 
 const outRect = shallowRef<DOMRect>();
 // display padding around axes.
-const marginLeft = 64;
+const marginLeft = 36;
 const marginBottom = 24;
 
 // domain of x-axis
@@ -181,13 +181,13 @@ function makeLine(model: CurveModel) {
 </script>
 <template>
 
-	<svg ref="svgRef" class="w-full h-auto"
+	<svg ref="svgRef" class="w-full h-auto overflow-visible"
 		 @pointermove="onMouseMove"
 		 @mouseenter="onMouseEnter"
 		 @mouseleave="onMouseLeave">
-		<g ref="xAxisRef" class="select-none"
+		<g ref="xAxisRef" class="select-none pointer-events-none" stroke-width="1.4"
 		   :transform="`translate(0, ${-marginBottom + (outRect?.height ?? 0)})`" />
-		<g ref="yAxisRef" class="select-none"
+		<g ref="yAxisRef" class="select-none  pointer-events-none" stroke-width="1.5"
 		   :transform="`translate(${marginLeft}, 0)`" />
 		<text v-if="mouseIn" class="select-none pointer-events-none"
 			  :x="svgPt.x" :y="svgPt.y" font-size="10" fill="black">
@@ -202,12 +202,12 @@ function makeLine(model: CurveModel) {
 		</text>
 		<path v-for="m in curves" fill="none" stroke-width="12" :key="m.id"
 			  stroke="transparent"
-			  @click="selects.toggleSelect(m)"
+			  @click="selects.toggleSelect(m, $event.shiftKey)"
 			  :d="makeLine(m)" />
 		<path v-for="(model, ind) in curves" fill="none" :key="model.id"
+			  class="pointer-events-none"
 			  :stroke-width="selects.isSelected(model) ? 2.5 : 1.5"
 			  :stroke="model.color ?? UniqueColor(ind, colors)"
-			  @click="selects.toggleSelect(model)"
 			  :d="makeLine(model)" />
 	</svg>
 

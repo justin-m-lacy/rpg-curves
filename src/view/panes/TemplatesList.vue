@@ -7,6 +7,7 @@ defineProps();
 const templates = useTemplates();
 
 function onSelect(event: MouseEvent, temp: DataTemplate) {
+	templates.viewed = temp;
 }
 
 function onDelete(temp: DataTemplate) {

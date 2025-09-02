@@ -18,7 +18,7 @@ function onDelete(c: CurveModel) {
 
 </script>
 <template>
-	<div class="flex flex-col gap-y-3">
+	<div class="flex flex-col items-stretch gap-y-3 pl-1">
 		<div v-for="m in curves.curves" :key="m.id"
 			 class="flex items-center gap-x-2 py-0" :class="{
 				'font-bold': select.isSelected(m as CurveModel)

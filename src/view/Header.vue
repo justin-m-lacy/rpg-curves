@@ -4,12 +4,13 @@ import { encodeCurves } from '@/export/encode-curve';
 import { loadJsonStr, useFileLink } from '@/export/files';
 import { CurveModel } from '@/model/curve-model';
 import { useCurves } from '@/store/curves-store';
+import { useSection } from '@/store/section-store';
 import { useFileSelect } from '@/view/composable/file-select';
 
 const showMerge = ref(false);
-
 const curveStore = useCurves();
 
+const sections = useSection();
 function exportData() {
 
 	const json = encodeCurves(curveStore.curves as Record<string, CurveModel>);
@@ -38,9 +39,11 @@ async function loadFile(files: FileList) {
 }
 
 function editCurves() {
+	sections.section = 'curves';
 }
 
 function editTemplates() {
+	sections.section = 'templates';
 
 }
 

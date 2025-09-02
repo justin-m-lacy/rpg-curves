@@ -7,9 +7,9 @@ import { defineStore } from 'pinia';
 export const useSection = defineStore('section', () => {
 
 	// section being viewed.
-	const section = ref<string>();
+	const section = ref<'curves' | 'templates'>('curves');
 
-	function view(page: string) {
+	function view(page: 'curves' | 'templates') {
 		section.value = page;
 	}
 

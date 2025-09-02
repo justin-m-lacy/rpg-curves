@@ -3,12 +3,13 @@
  */
 export const colors = [
 
-	'blue',
-	'red',
+	'#479FF8',
+	'#FF3627',
 	'mediumpurple',
 	'green',
 	"darkorange",
-	"darkskyblue",
+	'blue',
+	'red',
 	"purple",
 	"olive",
 	"orange",
