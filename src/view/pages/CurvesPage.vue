@@ -29,7 +29,7 @@ function onNewCurve(model: CurveModel) {
 
 		<div class="h-full flex flex-col gap-y-1 grow">
 			<D3GraphView :curves="(viewCurves.viewing as CurveModel[])" />
-			<div class="flex flex-wrap gap-y-3">
+			<div class="flex flex-wrap gap-y-2 gap-x-4">
 				<CurveEditor v-for="model in select.selected" class="flex"
 							 :key="model.id" :model="(model as CurveModel)" />
 			</div>

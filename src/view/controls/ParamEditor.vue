@@ -53,7 +53,11 @@ function onChange(param: CurveParam, value: string) {
 				 class="select-none pointer-events-none font-semibold">
 				{{ v }}</div>
 			<input v-else type="number" class="text-sm shrink py-0.5 min-w-4 w-12 text-right
-				bg-green-200 rounded-md" :title="v.prop"
+				 rounded-md"
+				   :style="{
+					'background-color': `color-mix(in oklab, ${curve.color} 50%, transparent)`
+				}"
+				   :title="v.prop"
 
 				   @change="onChange(v, ($event.target as HTMLInputElement).value)"
 				   :value="v.value" :placeholder="v.prop">

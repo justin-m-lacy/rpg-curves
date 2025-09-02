@@ -35,6 +35,6 @@ function onNewComposite(m: CurveSumModel) {
 				   class="bg-orange-200 rounded-lg py-1 px-2" />
 		</div>
 		<Legend :curves="curves" class="my-3" @select="selects.select" />
-		<NewComposite :curves="curves" @create="onNewComposite" />
+		<NewComposite v-if="selects.selected.length >= 2" :curves="curves" @create="onNewComposite" />
 	</div>
 </template>
