@@ -2,7 +2,7 @@
 import { CurveModel } from '@/model/curve-model';
 import { CurveCreator } from '@/model/curves/curves';
 import { useCreators } from '@/store/creators';
-import CurveSelector from '@/view/controls/CurveSelector.vue';
+import CurveSelector from '@/view/controls/CurveSelect.vue';
 import LabelEditor from '@/view/controls/LabelEditor.vue';
 import ParamEditor from '@/view/controls/ParamEditor.vue';
 
@@ -48,10 +48,7 @@ function onChangeCurve(creator?: CurveCreator) {
 						Number(($event.target as HTMLInputElement).value))"
 					   :min="param.min"
 					   :max="param.max">
-			</template>
-<template v-else>
-			</template>
-</div>-->
+			</template></div>-->
 
 	</div>
 </template>

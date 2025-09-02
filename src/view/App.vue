@@ -37,8 +37,8 @@ function onNewCurve(model: CurveModel) {
 						   :curves="select.selected" />-->
 				<D3GraphView :curves="view.viewing" />
 				<div class="flex flex-wrap gap-y-3">
-					<CurveEditor v-for="curve in select.selected" class="flex"
-								 :model="curve" :key="curve.id" />
+					<CurveEditor v-for="model in select.selected" class="flex"
+								 v-bind:key="model.id" :model="model" :key="model.id" />
 				</div>
 			</div>
 

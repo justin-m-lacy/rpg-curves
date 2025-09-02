@@ -35,10 +35,10 @@ function tryCreate() {
 			<option :value="'curvediff'">Subtract</option>
 		</select>
 		<select v-model="modelA" class="py-0.5 my-0 text-xs w-20">
-			<option v-for="m in curves" :value="m">{{ m.label }}</option>
+			<option v-for="m in curves" :value="m" :key="m.id">{{ m.label }}</option>
 		</select>
 		<select v-model="modelB" class="py-0.5 my-0 text-xs w-20">
-			<option v-for="m in curves" :value="m">{{ m.label }}</option>
+			<option v-for="m in curves" :value="m" :key="m.id">{{ m.label }}</option>
 		</select>
 		<button type="button" class="btn"
 				:disabled="!modelA || !modelB"

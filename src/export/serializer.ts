@@ -1,5 +1,5 @@
-import { parseClusters, parsePoints } from "@/export/decode";
-import { encodeClusters, encodePoints } from "@/export/encode";
+import { parseClusters, parsePoints } from "@/export/decode-curve";
+import { encodeClusters, encodePoints } from "@/export/encode-curve";
 import type { TCluster, TPoint } from "@/types/geom";
 import { ResetIds } from "@/util/data";
 import type { Serializer } from "@vueuse/core";

@@ -19,14 +19,14 @@ function onDelete(c: CurveModel) {
 </script>
 <template>
 	<div class="flex flex-col gap-y-3">
-		<div v-for="c in curves.curves.values()"
+		<div v-for="m in curves.curves" :key="m.id"
 			 class="flex items-center gap-x-2 py-0" :class="{
-				'font-bold': select.isSelected(c as CurveModel)
+				'font-bold': select.isSelected(m as CurveModel)
 			}"
-			 @click="onSelect($event, c as CurveModel)">
+			 @click="onSelect($event, m as CurveModel)">
 
-			<button @click="onDelete(c as CurveModel)" class="text-[0.5rem]">❌</button>
-			<LabelEditor v-model="c.label" />
+			<button @click="onDelete(m as CurveModel)" class="text-[0.5rem]">❌</button>
+			<LabelEditor v-model="m.label" />
 		</div>
 	</div>
 

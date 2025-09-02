@@ -193,18 +193,18 @@ function makeLine(model: CurveModel) {
 			  :x="svgPt.x" :y="svgPt.y" font-size="10" fill="black">
 			{{ svgPt.domX }}, {{ svgPt.domY }}
 		</text>
-		<text v-for="m in curves" class="select-none pointer-events-none"
+		<text v-for="m in curves" class="select-none pointer-events-none" :key="m.id"
 			  :x="xscale(inTicks[inTicks.length - 2]) - 20"
 			  :y="yscale(m.map(inTicks[inTicks.length - 2])) - 10" font-size="12"
 			  font-weight="600"
 			  :fill="m.color ?? 'black'">
 			{{ m.label }}
 		</text>
-		<path v-for="(model) in curves" fill="none" stroke-width="12"
+		<path v-for="m in curves" fill="none" stroke-width="12" :key="m.id"
 			  stroke="transparent"
-			  @click="selects.toggleSelect(model)"
-			  :d="makeLine(model)" />
-		<path v-for="(model, ind) in curves" fill="none"
+			  @click="selects.toggleSelect(m)"
+			  :d="makeLine(m)" />
+		<path v-for="(model, ind) in curves" fill="none" :key="model.id"
 			  :stroke-width="selects.isSelected(model) ? 2.5 : 1.5"
 			  :stroke="model.color ?? UniqueColor(ind, colors)"
 			  @click="selects.toggleSelect(model)"

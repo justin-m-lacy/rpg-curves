@@ -6,8 +6,8 @@ import { defineStore } from 'pinia';
 
 export const useCurves = defineStore('curves', () => {
 
-	// map curves by curve label.
-	const curves = ref(new Map<string, CurveModel>());
+	// map curves by internal curve id.
+	const curves = ref<Record<string, CurveModel>>(Object.create(null));
 
 	const newEvent = useEventBus<'newcurve', CurveModel>('newcurve');
 	const deleteEvent = useEventBus<'deletecurve', CurveModel>('deletecurve');
@@ -18,20 +18,20 @@ export const useCurves = defineStore('curves', () => {
 	 * remove all curves.
 	 */
 	function deleteAll() {
-		for (const m of curves.value.entries()) {
-			deleteEvent.emit('deletecurve', m as any as CurveModel);
+		for (const k in curves.value) {
+			deleteEvent.emit('deletecurve', curves.value[k] as any as CurveModel);
 		}
-		curves.value.clear();
+		curves.value = Object.create(null);
 	}
 
 	function add(m: CurveModel) {
-		curves.value.set(m.id, m);
+		curves.value[m.id] = m;
 		newEvent.emit('newcurve', m);
 		return m;
 	}
 
 	function remove(m: CurveModel) {
-		curves.value.delete(m.id);
+		delete curves.value[m.id];
 		deleteEvent.emit('deletecurve', m);
 	}
 
@@ -47,6 +47,17 @@ export const useCurves = defineStore('curves', () => {
 		}));
 	}
 
+	function find(label: string) {
+
+		const all = curves.value;
+		for (const k in all) {
+			if (all[k].label == label) {
+				return all[k];
+			}
+		}
+		return undefined;
+
+	}
 
 	return {
 
@@ -56,6 +67,7 @@ export const useCurves = defineStore('curves', () => {
 		deleteAll,
 		createSum,
 		createDiff,
+		find,
 		uniqueName() {
 			return `Curve ${nextId++}`;
 		}

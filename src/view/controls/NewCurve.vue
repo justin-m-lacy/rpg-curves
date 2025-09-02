@@ -2,7 +2,7 @@
 import { CurveModel } from '@/model/curve-model';
 import { CurveCreator } from '@/model/curves/curves';
 import { useCreators } from '@/store/creators';
-import CurveSelector from '@/view/controls/CurveSelector.vue';
+import CurveSelector from '@/view/controls/CurveSelect.vue';
 
 const emit = defineEmits<{
 	(e: 'newCurve', c: CurveModel): void;

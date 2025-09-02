@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { decodeCurves } from '@/export/decode';
-import { encodeCurves } from '@/export/encode';
+import { decodeCurves } from '@/export/decode-curve';
+import { encodeCurves } from '@/export/encode-curve';
 import { loadJsonStr, useFileLink } from '@/export/files';
 import { CurveModel } from '@/model/curve-model';
 import { useCurves } from '@/store/curves-store';
