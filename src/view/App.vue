@@ -1,47 +1,18 @@
 <script setup lang="ts">
-import { CurveModel } from '@/model/curve-model';
-import { useCreators } from '@/store/creators';
 import { useCurves } from '@/store/curves-store';
-import { useSelect } from '@/store/select-store';
-import { useViewCurves } from '@/store/view-curves';
-import NewCurve from '@/view/controls/NewCurve.vue';
+import { useSection } from '@/store/section-store';
 import Header from '@/view/Header.vue';
-import CurveEditor from '@/view/panes/CurveEditor.vue';
-import CurvesList from '@/view/panes/CurvesList.vue';
-import D3GraphView from '@/view/panes/D3GraphView.vue';
-
-const creators = useCreators();
-const select = useSelect();
-const view = useViewCurves();
+import CurvesPage from '@/view/pages/CurvesPage.vue';
 
 const curves = useCurves();
+const section = useSection();
 
-function onNewCurve(model: CurveModel) {
-	model.label = curves.uniqueName();
-	curves.add(model);
-}
 </script>
 <template>
 
 	<div class="flex flex-col h-screen w-full">
 		<Header></Header>
 
-		<div class="h-full flex gap-x-2 justify-stretch items-start">
-			<div class="flex flex-col gap-y-1.5 p-2 py-4 min-w-36 w-40 bg-white/75 min-h-full">
-				<NewCurve @newCurve="onNewCurve" />
-				<CurvesList />
-			</div>
-
-			<div class="h-full flex flex-col gap-y-1 grow-4">
-				<!--<GraphView v-if="chartsLoaded" class="basis-1/2"
-						   :curves="select.selected" />-->
-				<D3GraphView :curves="view.viewing" />
-				<div class="flex flex-wrap gap-y-3">
-					<CurveEditor v-for="model in select.selected" class="flex"
-								 v-bind:key="model.id" :model="model" :key="model.id" />
-				</div>
-			</div>
-
-		</div>
+		<CurvesPage v-if="section.section == 'curves'" />
 	</div>
 </template>

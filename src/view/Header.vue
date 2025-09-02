@@ -12,7 +12,7 @@ const curveStore = useCurves();
 
 function exportData() {
 
-	const json = encodeCurves(curveStore.curves as Map<string, CurveModel>);
+	const json = encodeCurves(curveStore.curves as Record<string, CurveModel>);
 	useFileLink(json, 'curves');
 
 }
@@ -37,6 +37,13 @@ async function loadFile(files: FileList) {
 	}
 }
 
+function editCurves() {
+}
+
+function editTemplates() {
+
+}
+
 const fileDrop = (e: DragEvent) => {
 
 	const files = e.dataTransfer?.files;
@@ -56,6 +63,8 @@ const fileDrag = (e: DragEvent) => {
 	<div class="h-min w-full px-4 bg-slate-900 text-slate-100
 		flex gap-x-6 py-0.5"
 		 v-bind="$attrs">
+		<button type="button" @click="editCurves">Curves</button>
+		<button type="button" @click="editTemplates">Templates</button>
 		<button type="button" @click="exportData">Export Curves</button>
 		<button type="button"
 				@click.stop.prevent="fileSelect.open"

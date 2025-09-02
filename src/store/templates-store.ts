@@ -5,18 +5,31 @@ export const useTemplates = defineStore('templates', () => {
 
 	const templates = ref<Record<string, DataTemplate>>(Object.create(null));
 
-	function create(id: string): DataTemplate {
+	// data template being viewed.
+	const viewed = ref<DataTemplate | null>(null);
+
+
+	function create(name: string): DataTemplate {
 
 		return {
-			id,
+			name,
+			id: window.crypto.randomUUID(),
 			curves: Object.create(null)
 		}
 
 	}
 
+	function remove(temp: DataTemplate) {
+
+		delete templates.value[temp.id];
+
+	}
+
 	return {
+		viewed,
 		templates,
-		create
+		create,
+		remove
 	}
 
 

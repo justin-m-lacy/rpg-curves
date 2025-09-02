@@ -1,10 +1,10 @@
 import { CurveModel } from "@/model/curve-model";
 
-export const encodeCurves = (curves: Map<string, CurveModel>) => {
+export const encodeCurves = (curves: Record<string, CurveModel>) => {
 
 	const list: ReturnType<CurveModel['toJSON']>[] = [];
-	for (const curve of curves.values()) {
-		list.push(curve.toJSON());
+	for (const k in curves) {
+		list.push(curves[k].toJSON());
 	}
 
 	return JSON.stringify({

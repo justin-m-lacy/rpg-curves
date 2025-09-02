@@ -6,7 +6,7 @@ import { defineStore } from 'pinia';
 /**
  * select curves to view.
  */
-export const useViewCurves = defineStore('view', () => {
+export const useViewCurves = defineStore('viewcurves', () => {
 
 	const viewing = ref<CurveModel[]>([]);
 
@@ -22,7 +22,7 @@ export const useViewCurves = defineStore('view', () => {
 
 		// check for removed views.
 		for (const model of viewing.value) {
-			if (!curves.has(model.id)) {
+			if (!curves[model.id]) {
 				unview(model as CurveModel);
 			}
 		}

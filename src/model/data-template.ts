@@ -21,11 +21,14 @@ export type DataValue = {
 
 export type DataTemplate = {
 
-	id: string,
+	// internal id.
+	id: string;
+
+	name: string;
 
 	/**
 	 * curve-id to data value.
 	 */
-	curves: Record<string, DataValue>
+	curves: Record<string, DataValue>;
 
 }
