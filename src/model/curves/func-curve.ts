@@ -5,6 +5,8 @@ import { CurveBase } from "@/model/curves/curve-base";
  */
 export class FuncCurve extends CurveBase {
 
+	static type = 'func';
+
 	map: (v: number) => number;
 
 	get formula() {
@@ -13,7 +15,7 @@ export class FuncCurve extends CurveBase {
 
 	constructor(opts: { name: string, func: (v: number) => number }) {
 
-		super();
+		super(FuncCurve.type);
 		this.map = opts.func;
 
 	}

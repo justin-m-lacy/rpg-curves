@@ -4,7 +4,7 @@
 export const colors = [
 
 	'#479FF8',
-	'#FF3627',
+	'#EC4141',
 	'mediumpurple',
 	'green',
 	"darkorange",

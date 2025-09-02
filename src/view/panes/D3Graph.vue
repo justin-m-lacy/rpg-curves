@@ -51,10 +51,10 @@ function onMouseMove(event: MouseEvent) {
 	svgPt.domX = roundTo * Math.round(xscale.value.invert(svgPt.x) / roundTo);
 	svgPt.domY = yscale.value.invert(svgPt.y);
 
-	const nearest = nearestCurve(svgPt.domX, svgPt.domY);
+	/*const nearest = nearestCurve(svgPt.domX, svgPt.domY);
 	if (nearest) {
 		svgPt.domY = nearest?.map(svgPt.domX)
-	}
+	}*/
 
 	svgPt.domY = Math.round(10 * svgPt.domY) / 10;
 
@@ -171,11 +171,12 @@ function makeLine(model: CurveModel) {
 
 	const xTicks = inTicks.value;
 	// map inX,outY to scaled view values.
-	return d3.line<number>(
-		(_, i) => xscale.value(xTicks[i]),
-		(d, _) => yscale.value(d)).curve(d3.curveBasis)(
-			model.mapDomain(xTicks)
-		) ?? '';
+	return d3.line<[number, number]>(
+		(d, _) => xscale.value(d[0]),
+		(d, _) => yscale.value(d[1])
+	).curve(d3.curveBasis)(
+		model.mapDomain(inTicks.value)
+	) ?? '';
 
 }
 </script>

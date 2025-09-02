@@ -2,7 +2,7 @@ import { CurveCreator } from "@/model/curves/curves";
 import { QuadCurve } from "@/model/curves/quad-curve";
 
 export const quadCreator: CurveCreator<QuadCurve> = {
-	type: 'quad',
+	type: QuadCurve.type,
 	create() {
 		return new QuadCurve();
 	},

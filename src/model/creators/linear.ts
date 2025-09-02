@@ -2,7 +2,7 @@ import { CurveCreator } from "@/model/curves/curves";
 import { LinearCurve } from "@/model/curves/linear-curve";
 
 export const linearCreator: CurveCreator<LinearCurve> = {
-	type: 'linear',
+	type: LinearCurve.type,
 	create() {
 		return new LinearCurve();
 	},

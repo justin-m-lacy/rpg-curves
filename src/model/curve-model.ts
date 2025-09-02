@@ -73,10 +73,16 @@ export class CurveModel {
 
 	}
 
-	mapDomain(xvals: number[]) {
-		return xvals.map(x => this.map(x))
+	mapDomain(xvals: number[]): Array<[number, number]> {
+		return xvals.map<[number, number]>(x => [x, this.map(x)]).filter(
+			(v) => v[1] != Number.NEGATIVE_INFINITY &&
+				v[1] != Number.POSITIVE_INFINITY &&
+				!Number.isNaN(v[1])
+		);
 	}
-	map(x: number): number { return this._curve.map(x) }
+	map(x: number): number {
+		return this._curve.map(x)
+	}
 
 	getParamValue(prop: string) {
 

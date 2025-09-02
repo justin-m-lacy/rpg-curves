@@ -5,6 +5,8 @@ import { CurveBase } from "@/model/curves/curve-base";
  */
 export class QuadCurve extends CurveBase {
 
+	static type = 'quad';
+
 	public A: number = 1;
 	public B: number = 1;
 	public C: number = 1;
@@ -15,7 +17,7 @@ export class QuadCurve extends CurveBase {
 
 
 	constructor() {
-		super();
+		super(QuadCurve.type);
 	}
 
 	map(x: number) {

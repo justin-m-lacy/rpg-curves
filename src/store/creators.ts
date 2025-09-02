@@ -1,9 +1,10 @@
-import { expCreator, natExpCreator } from '@/model/creators/exp';
+import { exp10Creator, exp2Creator, expNCreator, natExpCreator } from '@/model/creators/exp';
 import { linearCreator } from '@/model/creators/linear';
 import { quadCreator } from '@/model/creators/quad';
 import { CurveModel } from '@/model/curve-model';
 import { CurveCreator } from '@/model/curves/curves';
 import { defineStore } from 'pinia';
+import { lnCurveCreator, log10Creator, log2Creator, logNCreator } from '../model/creators/log';
 import { GetColor } from './colors';
 
 export const useCreators = defineStore('curve', () => {
@@ -22,7 +23,6 @@ export const useCreators = defineStore('curve', () => {
 		if (!creator) return undefined;
 
 		const curve = creator.create();
-		curve.type = type;
 
 		return new CurveModel({
 			label, curve, params: creator.params,
@@ -31,7 +31,16 @@ export const useCreators = defineStore('curve', () => {
 
 	}
 
-	register(linearCreator, expCreator, natExpCreator, quadCreator);
+	register(linearCreator,
+		exp2Creator,
+		exp10Creator,
+		natExpCreator,
+		expNCreator,
+		lnCurveCreator,
+		log2Creator,
+		log10Creator,
+		logNCreator,
+		quadCreator);
 
 	return {
 		create,
