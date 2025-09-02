@@ -14,6 +14,15 @@ export class CurveSumModel extends CurveModel {
 	A: number = 1;
 	B: number = 1;
 
+	get label(): string {
+		return this._label.length > 0 ? this.label :
+			(this.curveA?.label ?? this.curveA.type) +
+			(this.A < 0 || this.B < 0 ? ' - ' : ' + ') + (this.curveB?.label ?? this.curveB.type)
+	}
+	get formula() {
+		return '{A}*curveA + {B}*curveB'
+	}
+
 	constructor(opts: {
 		curveA: TCurve,
 		curveB: TCurve,
@@ -27,7 +36,7 @@ export class CurveSumModel extends CurveModel {
 
 		super({
 			id: opts.id,
-			label: opts.label,
+			label: opts.label ?? '',
 			curve: opts.curveA,
 			color: opts.color,
 			params: opts.params
@@ -47,10 +56,6 @@ export class CurveSumModel extends CurveModel {
 			prop: 'B',
 			value: opts.B ?? 1
 		})
-
-		this.label = opts.label ?? (this.curveA?.label ?? this.curveA.type) +
-			(this.A < 0 || this.B < 0 ? ' - ' : ' + ') + (this.curveB?.label ?? this.curveB.type);
-
 
 	}
 

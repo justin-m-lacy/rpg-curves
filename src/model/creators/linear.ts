@@ -8,12 +8,10 @@ export const linearCreator: CurveCreator<LinearCurve> = {
 	},
 	params: [{
 		prop: 'A',
-		desc: 'Ax + C',
 		value: 1
 	},
 	{
 		prop: 'C',
-		desc: 'Ax + C',
 		value: 1
 	}]
 };

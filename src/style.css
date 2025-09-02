@@ -9,6 +9,8 @@
 	--grow-3:3;
 	--grow-4:4;
 	--grow-5:5;
+
+	--spacing-120:30rem;
 }
 
 @layer components {

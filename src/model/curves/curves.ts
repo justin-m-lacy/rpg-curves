@@ -13,13 +13,13 @@ export type CurveCreator<D extends object = any> = {
 export type TCurve<D extends object = object> = D & {
 	label?: string;
 	type: string;
+	formula: string;
 	map(x: number): number;
 }
 
 export type ICurve = new (obj?: any) => TCurve<any>;
 export type CurveParam<T extends object = any> = {
 	prop: string & keyof T,
-	desc?: string,
 	value: number;
 	name?: string,
 	min?: number,

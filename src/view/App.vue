@@ -35,7 +35,7 @@ function onNewCurve(model: CurveModel) {
 			<div class="h-full flex flex-col gap-y-1 grow-4">
 				<!--<GraphView v-if="chartsLoaded" class="basis-1/2"
 						   :curves="select.selected" />-->
-				<D3GraphView :curves="view.viewing" class="max-h-7/12" />
+				<D3GraphView :curves="view.viewing" />
 				<div class="flex flex-wrap gap-y-3">
 					<CurveEditor v-for="curve in select.selected" class="flex"
 								 :model="curve" :key="curve.id" />

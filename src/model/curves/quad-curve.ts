@@ -9,6 +9,11 @@ export class QuadCurve extends CurveBase {
 	public B: number = 1;
 	public C: number = 1;
 
+	get formula() {
+		return '{A}x^2 + {B}x + {C}'
+	}
+
+
 	constructor() {
 		super();
 	}

@@ -9,6 +9,10 @@ export class ExpCurve extends CurveBase {
 	public B: number = 0.1;
 	public C: number = 1;
 
+	get formula() {
+		return '{A}10^({B}x) + {C}'
+	}
+
 	constructor() {
 		super('exp');
 	}
@@ -27,6 +31,10 @@ export class NatExpCurve extends CurveBase {
 	public A: number = 1;
 	public B: number = 0.1;
 	public C: number = 1;
+
+	get formula() {
+		return '{A}e^({B}x) + {C}'
+	}
 
 	constructor() {
 

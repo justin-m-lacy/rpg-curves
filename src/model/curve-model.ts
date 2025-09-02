@@ -22,6 +22,10 @@ export class CurveModel {
 	set label(v) { this._label = v }
 	protected _label: string;
 
+	get formula() {
+		return this._curve.formula
+	}
+
 	color?: string;
 
 	constructor(opts: {

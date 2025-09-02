@@ -7,6 +7,10 @@ export class FuncCurve extends CurveBase {
 
 	map: (v: number) => number;
 
+	get formula() {
+		return 'function(x)'
+	}
+
 	constructor(opts: { name: string, func: (v: number) => number }) {
 
 		super();

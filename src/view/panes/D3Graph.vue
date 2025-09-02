@@ -2,7 +2,6 @@
 import { CurveModel } from "@/model/curve-model";
 import { UniqueColor } from "@/store/colors";
 import { useSelect } from "@/store/select-store";
-import { useRange } from "@/view/composable/range-store";
 import { useZoom } from "@/view/composable/zoom";
 import { useEventListener } from "@vueuse/core";
 import * as d3 from "d3";
@@ -24,7 +23,7 @@ const marginBottom = 24;
 
 // domain of x-axis
 const domain = defineModel<[number, number]>('domain', { default: [0, 30] });
-const range = useRange();
+const range = defineModel<[number, number]>('range', { default: [0, 100] });
 
 useZoom(svgRef, domain);
 
@@ -41,12 +40,8 @@ function mouseToGraph(x: number, y: number) {
 	return [x - outRect.value!.left, y - outRect.value!.top];
 }
 
-function onMouseEnter() {
-	mouseIn.value = true;
-}
-function onMouseLeave() {
-	mouseIn.value = false;
-}
+function onMouseEnter() { mouseIn.value = true; }
+function onMouseLeave() { mouseIn.value = false; }
 
 function onMouseMove(event: MouseEvent) {
 
@@ -73,7 +68,7 @@ function onMouseMove(event: MouseEvent) {
 }
 
 /**
- * Get closest output x,y point of all selected curves,
+ * Get  curve with closest output y point of all selected curves,
  * or of all curves if none selected.
  * @param domX 
  * @param domY 
@@ -186,7 +181,7 @@ function makeLine(model: CurveModel) {
 </script>
 <template>
 
-	<svg ref="svgRef" class="w-full"
+	<svg ref="svgRef" class="w-full h-auto"
 		 @pointermove="onMouseMove"
 		 @mouseenter="onMouseEnter"
 		 @mouseleave="onMouseLeave">
@@ -197,6 +192,13 @@ function makeLine(model: CurveModel) {
 		<text v-if="mouseIn" class="select-none pointer-events-none"
 			  :x="svgPt.x" :y="svgPt.y" font-size="10" fill="black">
 			{{ svgPt.domX }}, {{ svgPt.domY }}
+		</text>
+		<text v-for="m in curves" class="select-none pointer-events-none"
+			  :x="xscale(inTicks[inTicks.length - 2]) - 20"
+			  :y="yscale(m.map(inTicks[inTicks.length - 2])) - 10" font-size="12"
+			  font-weight="600"
+			  :fill="m.color ?? 'black'">
+			{{ m.label }}
 		</text>
 		<path v-for="(model) in curves" fill="none" stroke-width="12"
 			  stroke="transparent"

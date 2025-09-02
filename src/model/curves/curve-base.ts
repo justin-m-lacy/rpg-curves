@@ -9,6 +9,8 @@ export abstract class CurveBase {
 
 	abstract map(x: number): number;
 
+	abstract get formula(): string;
+
 	getYValues(range: [number, number], steps: number) {
 		const step = (range[1] - range[0]) / steps;
 
