@@ -9,20 +9,27 @@ const props = defineProps<{
 const parts = ref<Array<string | CurveParam>>([]);
 watch(() => props.curve.formula, (formula) => {
 
-	const RE = /(\{\w+\})/i;
-	const split = formula.split(RE);
+	const RE = /\{\w+\}/ig;
+	const matches = formula.matchAll(RE);
 
 	const res: Array<string | CurveParam> = [];
 
-	for (let i = 0; i < split.length; i++) {
+	let lastInd = 0;
+	for (const m of matches) {
 
-		if (!split[i].length) continue;
-		if (split[i][0] != '{' || !split[i].endsWith('}')) res.push(split[i]);
+		if (m.index > lastInd) {
+			res.push(formula.slice(lastInd, m.index))
+		}
 
 		// slice without {} braces
-		const param = props.curve.params[split[i].slice(1, -1)];
+		const param = props.curve.params[m[0].slice(1, -1)];
 		if (param) res.push(param);
+		lastInd = m.index + m[0].length;
 
+	}
+
+	if (lastInd <= formula.length) {
+		res.push(formula.slice(lastInd));
 	}
 
 	parts.value = res;
@@ -40,14 +47,17 @@ function onChange(param: CurveParam, value: string) {
 </script>
 <template>
 	<div class="flex gap-x-1 items-center text-sm">
+		<span class="font-semibold pointer-events-none select-none">f( X ) = </span>
 		<template v-for="v in parts">
 			<div v-if="typeof v == 'string'"
-				 class="select-none pointer-events-none">
+				 class="select-none pointer-events-none font-semibold">
 				{{ v }}</div>
-			<input v-else type="number" class="text-sm shrink" :title="v.prop"
+			<input v-else type="number" class="text-sm shrink py-0.5 min-w-4 w-12 text-right
+				bg-green-200 rounded-md" :title="v.prop"
 
 				   @change="onChange(v, ($event.target as HTMLInputElement).value)"
 				   :value="v.value" :placeholder="v.prop">
+
 		</template>
 	</div>
 </template>

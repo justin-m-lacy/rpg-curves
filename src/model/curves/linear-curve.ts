@@ -9,7 +9,7 @@ export class LinearCurve extends CurveBase {
 	public C: number = 1;
 
 	get formula() {
-		return '{A}x + {B}'
+		return '{A} * X + {C}'
 	}
 
 	constructor() {
