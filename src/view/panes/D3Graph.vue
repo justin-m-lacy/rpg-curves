@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { CurveModel } from "@/model/curve-model";
+import { evenTicks } from "@/model/dividers";
 import { UniqueColor } from "@/store/colors";
 import { useSelect } from "@/store/select-store";
+import { useFuncDrag } from "@/view/composable/func-drag";
 import { useZoom } from "@/view/composable/zoom";
 import { useEventListener } from "@vueuse/core";
 import * as d3 from "d3";
@@ -21,11 +23,17 @@ const outRect = shallowRef<DOMRect>();
 const marginLeft = 36;
 const marginBottom = 24;
 
+/**
+ * prevent range automatically updating.
+ */
+const lockRange = shallowRef(false);
+
 // domain of x-axis
 const domain = defineModel<[number, number]>('domain', { default: [0, 30] });
 const range = defineModel<[number, number]>('range', { default: [0, 100] });
 
 useZoom(svgRef, domain);
+useFuncDrag(svgRef, domain, range, outRect);
 
 const selects = useSelect();
 
@@ -51,20 +59,14 @@ function onMouseMove(event: MouseEvent) {
 	svgPt.domX = roundTo * Math.round(xscale.value.invert(svgPt.x) / roundTo);
 	svgPt.domY = yscale.value.invert(svgPt.y);
 
-	/*const nearest = nearestCurve(svgPt.domX, svgPt.domY);
+	const nearest = nearestCurve(svgPt.domX, svgPt.domY);
 	if (nearest) {
 		svgPt.domY = nearest?.map(svgPt.domX)
-	}*/
+	}
 
 	svgPt.domY = Math.round(10 * svgPt.domY) / 10;
-
-
 	svgPt.x = xscale.value(svgPt.domX) - 10;
 	svgPt.y = yscale.value(svgPt.domY) - 10;
-
-	//svgPt.domX = domX; //Math.round(xscale.value.invert(local[0]) * 10) / 10;
-	//svgPt.domY = domY; //Math.round(yscale.value.invert(local[1]) * 10) / 10;
-
 }
 
 /**
@@ -98,7 +100,7 @@ function nearestCurve(domX: number, domY: number) {
 const xscale = computed(() => {
 	return d3.scaleLinear().domain(domain.value).range(
 		[marginLeft, -marginLeft + (outRect.value?.width ?? 0)]
-	).nice();
+	)
 });
 
 /**
@@ -106,10 +108,10 @@ const xscale = computed(() => {
  */
 const inTicks = computed(() => {
 
-	const vals = xscale.value.ticks(20);
-	computeRange(vals);
+	const ticks = evenTicks(domain.value);
+	computeRange(ticks);
 
-	return vals;
+	return ticks;
 
 });
 
@@ -167,16 +169,15 @@ onMounted(() => {
 	outRect.value = svgRef.value?.getBoundingClientRect();
 })
 
+const lineFunc = d3.line<[number, number]>(
+	(d, _) => xscale.value(d[0]),
+	(d, _) => yscale.value(d[1])
+).curve(d3.curveBasis);
+
 function makeLine(model: CurveModel) {
 
-	const xTicks = inTicks.value;
 	// map inX,outY to scaled view values.
-	return d3.line<[number, number]>(
-		(d, _) => xscale.value(d[0]),
-		(d, _) => yscale.value(d[1])
-	).curve(d3.curveBasis)(
-		model.mapDomain(inTicks.value)
-	) ?? '';
+	return lineFunc(model.mapDomain(inTicks.value)) ?? '';
 
 }
 </script>

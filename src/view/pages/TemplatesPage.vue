@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { useSelect } from '@/store/select-store';
 import { useTemplates } from '@/store/templates-store';
-import { useViewCurves } from '@/store/view-curves';
 import TemplateEditor from '@/view/panes/TemplateEditor.vue';
 import TemplatesList from '@/view/panes/TemplatesList.vue';
 
-const select = useSelect();
-const viewCurves = useViewCurves();
 const templates = useTemplates();
 
 function onClickNew() {
+	templates.create('template');
 }
 
 </script>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { CurveModel } from '@/model/curve-model';
 import { CurveParam } from '@/model/curves/curves';
+import { cssAlpha } from '@/util/css';
 
 const props = defineProps<{
 	curve: CurveModel,
@@ -55,7 +56,7 @@ function onChange(param: CurveParam, value: string) {
 			<input v-else type="number" class="text-sm shrink py-0.5 min-w-4 w-12 text-right
 				 rounded-md"
 				   :style="{
-					'background-color': `color-mix(in oklab, ${curve.color} 50%, transparent)`
+					'background-color': curve.color ? cssAlpha(curve.color) : undefined
 				}"
 				   :title="v.prop"
 

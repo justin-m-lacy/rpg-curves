@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { CurveCreator } from '@/model/curves/curves';
 import { useCreators } from '@/store/creators';
+import { cssAlpha } from '@/util/css';
 
 const props = defineProps<{
 	color?: string
@@ -18,7 +19,7 @@ if (model.value == null) {
 	<select v-model="model" class="flex text-sm py-1 my-0.5 px-3 w-auto
 		outline-none outline-0 bg-green-100 border-green-800 rounded-sm"
 			:style="{
-				backgroundColor: color ? `color-mix(in oklab, ${color} 50%, transparent)` : undefined
+				backgroundColor: color ? cssAlpha(color) : undefined
 			}">
 		<option v-for="create in creatorStore.creators" :key="create.type"
 				:value="create">{{ create.type }}</option>

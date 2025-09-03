@@ -1,23 +1,18 @@
 /**
  * Get min, max values of array.
- * @param arr
+ * @param a
  * @param res - result array. input is also used
  * as the current min,max values.
  */
-export const getMinMax = (arr: [number, number][],
+export const getMinMax = (a: [number, number][],
 	res: [number, number] = [Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER]): [number, number] => {
 
-	for (let i = arr.length - 1; i >= 0; i--) {
-
-		const y = arr[i][1];
-
-		if (Number.isNaN(y)) continue;
-
-		if (y < res[0]) {
-			res[0] = y;
+	for (let i = a.length - 1; i >= 0; i--) {
+		if (a[i][1] < res[0]) {
+			res[0] = a[i][1];
 		}
-		if (y > res[1]) {
-			res[1] = y;
+		if (a[i][1] > res[1]) {
+			res[1] = a[i][1];
 		}
 	}
 	return res;
