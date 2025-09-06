@@ -12,7 +12,7 @@ const section = useSection();
 <template>
 
 	<div class="flex flex-col h-screen w-full">
-		<Header></Header>
+		<Header class="z-100"></Header>
 
 		<CurvesPage v-if="section.section == 'curves'" />
 		<TemplatesPage v-else-if="section.section == 'templates'" />

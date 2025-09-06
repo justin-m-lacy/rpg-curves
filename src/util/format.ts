@@ -1,5 +1,11 @@
 type Numeric = number | { value: number }
 
+export const getRounding = (x: number) => {
+
+  return Math.pow(10, Math.round(Math.log10(x < 0 ? -x : x)));
+
+}
+
 /**
  * Returns abbreviation of item based on first letters.
  * @param {*} it

@@ -24,8 +24,7 @@ const onCreate = () => {
 <template>
 	<div class="flex gap-x-2 justify-between items-center">
 		<CurveSelector class="grow" v-model="creator" />
-		<button type="button" class="btn"
-				@click="onCreate">New Curve</button>
+		<button type="button" class="btn" @click="onCreate">New Curve</button>
 	</div>
 
 </template>

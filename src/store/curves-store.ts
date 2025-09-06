@@ -1,6 +1,6 @@
 import { CurveModel } from '@/model/curve-model';
-import { CurveSumModel } from '@/model/curve-sum';
 import { TCurve } from '@/model/curves/curves';
+import { CurveSumModel } from '@/model/models/curve-sum';
 import { useEventBus } from '@vueuse/core';
 import { defineStore } from 'pinia';
 

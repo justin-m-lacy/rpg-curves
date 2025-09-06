@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CurveModel } from "@/model/curve-model";
-import { CurveSumModel } from "@/model/curve-sum";
+import { CurveSumModel } from "@/model/models/curve-sum";
 import { useCurves } from "@/store/curves-store";
 import { useSelect } from "@/store/select-store";
 import { useRange } from "@/view/composable/range-store";

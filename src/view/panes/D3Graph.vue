@@ -3,6 +3,7 @@ import { CurveModel } from "@/model/curve-model";
 import { evenTicks } from "@/model/dividers";
 import { UniqueColor } from "@/store/colors";
 import { useSelect } from "@/store/select-store";
+import { getRounding } from "@/util/format";
 import { useFuncDrag } from "@/view/composable/func-drag";
 import { useZoom } from "@/view/composable/zoom";
 import { useEventListener } from "@vueuse/core";
@@ -33,30 +34,28 @@ const domain = defineModel<[number, number]>('domain', { default: [0, 30] });
 const range = defineModel<[number, number]>('range', { default: [0, 100] });
 
 useZoom(svgRef, domain);
-useFuncDrag(svgRef, domain, range, outRect);
+useFuncDrag(svgRef, domain, outRect);
 
 const selects = useSelect();
+
+///rounding amount on rollover display.
+const roundTo = shallowRef<number>(10);
+const mouseIn = shallowRef(false);
 
 /**
  * mouse x,y relative to svg and the input domains.
  */
 const svgPt = reactive({ x: 0, y: 0, domX: 0, domY: 0 });
 
-const mouseIn = ref(false);
 
 function mouseToGraph(x: number, y: number) {
 	return [x - outRect.value!.left, y - outRect.value!.top];
 }
 
-function onMouseEnter() { mouseIn.value = true; }
-function onMouseLeave() { mouseIn.value = false; }
-
 function onMouseMove(event: MouseEvent) {
 
-	const roundTo = (domain.value[1] - domain.value[0]) / 20;
-
 	[svgPt.x, svgPt.y] = mouseToGraph(event.clientX, event.clientY);
-	svgPt.domX = roundTo * Math.round(xscale.value.invert(svgPt.x) / roundTo);
+	svgPt.domX = roundTo.value * Math.round(xscale.value.invert(svgPt.x) / roundTo.value);
 	svgPt.domY = yscale.value.invert(svgPt.y);
 
 	const nearest = nearestCurve(svgPt.domX, svgPt.domY);
@@ -100,7 +99,7 @@ function nearestCurve(domX: number, domY: number) {
 const xscale = computed(() => {
 	return d3.scaleLinear().domain(domain.value).range(
 		[marginLeft, -marginLeft + (outRect.value?.width ?? 0)]
-	)
+	).nice()
 });
 
 /**
@@ -109,6 +108,8 @@ const xscale = computed(() => {
 const inTicks = computed(() => {
 
 	const ticks = evenTicks(domain.value);
+	roundTo.value = getRounding((domain.value[1] - domain.value[0]) / 20);
+
 	computeRange(ticks);
 
 	return ticks;
@@ -185,8 +186,8 @@ function makeLine(model: CurveModel) {
 
 	<svg ref="svgRef" class="w-full h-auto overflow-visible"
 		 @pointermove="onMouseMove"
-		 @mouseenter="onMouseEnter"
-		 @mouseleave="onMouseLeave">
+		 @mouseenter="mouseIn = true"
+		 @mouseleave="mouseIn = false">
 		<g ref="xAxisRef" class="select-none pointer-events-none" stroke-width="1.4"
 		   :transform="`translate(0, ${-marginBottom + (outRect?.height ?? 0)})`" />
 		<g ref="yAxisRef" class="select-none  pointer-events-none" stroke-width="1.5"

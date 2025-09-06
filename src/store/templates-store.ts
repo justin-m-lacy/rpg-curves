@@ -1,4 +1,5 @@
 import { DataTemplate } from '@/model/data-template';
+import { useCurves } from '@/store/curves-store';
 import { defineStore } from 'pinia';
 
 export const useTemplates = defineStore('templates', () => {
@@ -32,12 +33,36 @@ export const useTemplates = defineStore('templates', () => {
 		delete templates.value[temp.id];
 	}
 
+	/**
+	 * 
+	 * @param temp - template to generate.
+	 * @param input - input to template curves.
+	 */
+	function generate(temp: DataTemplate, input: number) {
+
+		const curveStore = useCurves();
+		const item = Object.create(null);
+		for (const k in temp.curves) {
+
+			const curve = curveStore.curves[k];
+			if (!curve) continue;
+
+			const data = temp.curves[k];
+			item[curve.label] = curve.map(input);
+
+		}
+
+		return item;
+
+	}
+
 	return {
 		viewed,
 		templates,
 		create,
 		remove,
-		add
+		add,
+		generate
 	}
 
 

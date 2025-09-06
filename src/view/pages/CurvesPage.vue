@@ -20,7 +20,7 @@ function onNewCurve(model: CurveModel) {
 </script>
 <template>
 	<div class="h-full flex gap-x-2 justify-stretch items-start">
-		<div class="flex flex-col items-stretch
+		<div class="flex flex-col items-stretch z-10
 			gap-y-1.5 px-2 py-4 min-w-44 w-44
 			bg-white/75 min-h-full">
 			<NewCurve @newCurve="onNewCurve" />
