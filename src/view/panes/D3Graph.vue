@@ -47,10 +47,14 @@ const mouseIn = shallowRef(false);
  */
 const svgPt = reactive({ x: 0, y: 0, domX: 0, domY: 0 });
 
+const roundDomain = computed<[number, number]>(() => {
+	return round5(domain.value, 10);
+});
+
 const xscale = computed(() => {
 	return d3.scaleLinear().domain(domain.value).range(
 		[marginLeft, -marginLeft + (outRect.value?.width ?? 0)]
-	).nice();
+	).nice()
 });
 
 /**
@@ -58,24 +62,13 @@ const xscale = computed(() => {
  */
 const inTicks = computed(() => {
 
+	const v = roundDomain.value;
 	roundTo.value = getRounding(
-		(domain.value[1] - domain.value[0]) / 10
+		(v[1] - v[0])
 	);
 
-	const v = domain.value.slice() as [number, number];
-
-	console.log(`low: ${v[0]}`);
-	const rounded = round5(v, 10);
-
-	// bump to round numbers.
-	v[0] = rounded[0];
-	v[1] = rounded[1];
-
-	console.log(`start: ${domain.value[0]}  -> ${domain.value[1]}`);
-	console.log(`new: ${v[0]} -> ${v[1]}`);
-
-
-	const ticks = evenTicks(v, roundTo.value);
+	//console.log(`new: ${v[0]} -> ${v[1]}`);
+	const ticks = evenTicks(v);
 
 	computeRange(ticks);
 
@@ -193,14 +186,15 @@ const lineFunc = d3.line<[number, number]>(
 function makeLine(model: CurveModel) {
 
 	// map inX,outY to scaled view values.
-	return lineFunc(model.mapDomain(inTicks.value)) ?? '';
+	return lineFunc(model.mapDomain(xscale.value.ticks())) ?? '';
 
 }
 </script>
 <template>
 
-	<svg ref="svgRef" class="w-full h-auto overflow-visible"
+	<svg ref="svgRef" class="w-full h-auto overflow-visible select-none"
 		 @pointermove="onMouseMove"
+		 @dragstart.prevent
 		 @mouseenter="mouseIn = true"
 		 @mouseleave="mouseIn = false">
 		<g ref="xAxisRef" class="select-none pointer-events-none" stroke-width="1.4"

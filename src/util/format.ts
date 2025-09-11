@@ -1,6 +1,6 @@
 type Numeric = number | { value: number }
 
-export const round5 = ([low, high]: [number, number], ticks: number = 10) => {
+export const round5 = ([low, high]: [number, number], ticks: number = 10): [number, number] => {
 
   let w = Math.abs(high - low) / ticks;
   if (w > 10000) w = Math.round(w);
@@ -9,7 +9,6 @@ export const round5 = ([low, high]: [number, number], ticks: number = 10) => {
     Math.log10(w < 0 ? -w : w)
   ) - 1
   );
-  console.log(`div: ${div}`);
 
   return [
     div * Math.round((low / div)), div * Math.round((high / div))
