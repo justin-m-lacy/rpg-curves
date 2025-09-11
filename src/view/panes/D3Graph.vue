@@ -3,7 +3,7 @@ import { CurveModel } from "@/model/curve-model";
 import { evenTicks } from "@/model/dividers";
 import { UniqueColor } from "@/store/colors";
 import { useSelect } from "@/store/select-store";
-import { getRounding } from "@/util/format";
+import { getRounding, round5 } from "@/util/format";
 import { useFuncDrag } from "@/view/composable/func-drag";
 import { useZoom } from "@/view/composable/zoom";
 import { useEventListener } from "@vueuse/core";
@@ -47,8 +47,64 @@ const mouseIn = shallowRef(false);
  */
 const svgPt = reactive({ x: 0, y: 0, domX: 0, domY: 0 });
 
+const xscale = computed(() => {
+	return d3.scaleLinear().domain(domain.value).range(
+		[marginLeft, -marginLeft + (outRect.value?.width ?? 0)]
+	).nice();
+});
 
-function mouseToGraph(x: number, y: number) {
+/**
+ * domain of curve functions.
+ */
+const inTicks = computed(() => {
+
+	roundTo.value = getRounding(
+		(domain.value[1] - domain.value[0]) / 10
+	);
+
+	const v = domain.value.slice() as [number, number];
+
+	console.log(`low: ${v[0]}`);
+	const rounded = round5(v, 10);
+
+	// bump to round numbers.
+	v[0] = rounded[0];
+	v[1] = rounded[1];
+
+	console.log(`start: ${domain.value[0]}  -> ${domain.value[1]}`);
+	console.log(`new: ${v[0]} -> ${v[1]}`);
+
+
+	const ticks = evenTicks(v, roundTo.value);
+
+	computeRange(ticks);
+
+	return ticks;
+
+});
+
+const colors = computed(() => props.curves.map(v => v.color));
+
+/**
+ * Compute range from all input curves on input.
+ */
+function computeRange(xVals: number[]) {
+
+	const yRange: [number, number] = [Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER];
+
+	for (let i = props.curves.length - 1; i >= 0; i--) {
+		getMinMax(props.curves[i].mapDomain(xVals), yRange);
+	}
+
+	range.value = yRange;
+
+}
+
+const yscale = computed(() => {
+	return d3.scaleLinear().domain(range.value).range([(outRect.value?.height ?? 0) - marginBottom, marginBottom]).nice()
+});
+
+const mouseToGraph = (x: number, y: number) => {
 	return [x - outRect.value!.left, y - outRect.value!.top];
 }
 
@@ -95,47 +151,6 @@ function nearestCurve(domX: number, domY: number) {
 	return best;
 
 }
-
-const xscale = computed(() => {
-	return d3.scaleLinear().domain(domain.value).range(
-		[marginLeft, -marginLeft + (outRect.value?.width ?? 0)]
-	).nice()
-});
-
-/**
- * domain of curve functions.
- */
-const inTicks = computed(() => {
-
-	const ticks = evenTicks(domain.value);
-	roundTo.value = getRounding((domain.value[1] - domain.value[0]) / 20);
-
-	computeRange(ticks);
-
-	return ticks;
-
-});
-
-const colors = computed(() => props.curves.map(v => v.color));
-
-/**
- * Compute range from all input curves on input.
- */
-function computeRange(xVals: number[]) {
-
-	const yRange: [number, number] = [Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER];
-
-	for (let i = props.curves.length - 1; i >= 0; i--) {
-		getMinMax(props.curves[i].mapDomain(xVals), yRange);
-	}
-
-	range.value = yRange;
-
-}
-
-const yscale = computed(() => {
-	return d3.scaleLinear().domain(range.value).range([(outRect.value?.height ?? 0) - marginBottom, marginBottom]).nice()
-});
 
 useEventListener(window, 'keydown', (evt: KeyboardEvent) => {
 
