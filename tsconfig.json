@@ -24,7 +24,6 @@
       "dom"
     ],
     "types": [
-      "google/visualization",
       "vitest/globals"
     ],
     "paths": {
